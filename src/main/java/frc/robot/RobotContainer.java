@@ -12,7 +12,9 @@ public class RobotContainer {
     configureBindings();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    //lol
+  }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
