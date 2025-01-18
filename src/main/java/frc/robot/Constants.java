@@ -20,7 +20,7 @@ public class Constants {
     }
 
     public class ClimberConstants {
-
+        public static final int kClimberMotorID = 0;
     }
 
     public class CoralManipulatorConstants {
