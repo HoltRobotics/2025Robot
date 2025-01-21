@@ -12,18 +12,14 @@ public class Constants {
     }
 
     public class ElevatorConstants {
-
-    }
-
-    public class FunnelConstants {
-
+        
     }
 
     public class ClimberConstants {
         public static final int kClimberMotorID = 0;
     }
 
-    public class CoralManipulatorConstants {
-
+    public class ManipulatorConstants {
+        
     }
 }

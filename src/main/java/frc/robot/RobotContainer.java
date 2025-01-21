@@ -9,14 +9,18 @@ import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS5Controller;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Subsystems.Swerve;
+import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
     // Setting up max speeds for driving and turning
@@ -37,7 +41,14 @@ public class RobotContainer {
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
+    // Setting up the Auton Chooser box and Shuffleboard
+    private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
+    private final SendableChooser<Command> m_autoChooser;
+
   public RobotContainer() {
+    m_autoChooser = AutoBuilder.buildAutoChooser("Tests");
+    m_tab.add("Auto Chooser", m_autoChooser);
+    
     configureButtonBindings();
     configureSwerveBindings();
 
