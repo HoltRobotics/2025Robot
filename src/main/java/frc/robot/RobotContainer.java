@@ -23,12 +23,17 @@ import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Swerve;
 
 public class RobotContainer {
+    // Setting up max speeds for driving and turning
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+
     // Controllers
     private final PS5Controller m_driver = new PS5Controller(Constants.OIConstants.kDriverPort);
     private final Joystick m_operator = new Joystick(Constants.OIConstants.kOperatorPort);
 
     // Subsystems
     public final Swerve m_swerve = TunerConstants.createDrivetrain();
+    public final Telemetry logger = new Telemetry(MaxSpeed);
     public final Arm m_arm = new Arm();
 
     // Setting up max speeds for driving and turning
@@ -44,6 +49,8 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
     configureSwerveBindings();
+
+    m_swerve.registerTelemetry(logger::telemeterize);
   }
 
   private void configureButtonBindings() {
@@ -54,9 +61,9 @@ public class RobotContainer {
   private void configureSwerveBindings() {
     m_swerve.setDefaultCommand(
       m_swerve.applyRequest(() ->
-        drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed)
-             .withVelocityY(-m_driver.getLeftX() * MaxSpeed)
-             .withRotationalRate(m_driver.getRightX() * MaxAngularRate)
+        drive.withVelocityX(m_driver.getLeftY() * MaxSpeed)
+             .withVelocityY(m_driver.getLeftX() * MaxSpeed)
+             .withRotationalRate(-m_driver.getRightX() * MaxAngularRate)
       )
     );
 
