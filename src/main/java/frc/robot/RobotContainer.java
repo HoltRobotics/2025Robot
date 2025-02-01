@@ -16,6 +16,10 @@ import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Commands.Arm.DownArm;
+import frc.robot.Commands.Arm.UpArm;
+import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Swerve;
 
 public class RobotContainer {
@@ -25,6 +29,7 @@ public class RobotContainer {
 
     // Subsystems
     public final Swerve m_swerve = TunerConstants.createDrivetrain();
+    public final Arm m_arm = new Arm();
 
     // Setting up max speeds for driving and turning
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
@@ -42,7 +47,8 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-
+    new POVButton(m_driver, 270).whileTrue(new UpArm(m_arm));
+    new POVButton(m_driver, 90).whileTrue(new DownArm(m_arm));
   }
 
   private void configureSwerveBindings() {
