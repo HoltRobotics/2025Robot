@@ -1,12 +1,14 @@
 package frc.robot.Commands.Elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Subsystems.Elevator;
 
 
 public class MoveUp extends Command {
     Elevator m_elevator;
-    
+    double m_limit = ElevatorConstants.kMaxHeight;
+
     public MoveUp(Elevator elevator) {
         m_elevator = elevator;
         addRequirements(m_elevator);
@@ -21,7 +23,9 @@ public class MoveUp extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_elevator.MoveUp();
+        if (m_limit > m_elevator.getPosition()) {
+            m_elevator.MoveUp();
+            }
     }
 
     // Called once the command ends or is interrupted.

@@ -36,23 +36,27 @@ public class Elevator extends SubsystemBase {
     m_elevatorConfig.idleMode(IdleMode.kBrake);
     
     m_elevatorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-    m_elevatorConfig.closedLoop.pid(0.0025, 0, 0);
+    m_elevatorConfig.closedLoop.pid(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
+
+    m_elevatorConfig.closedLoop.maxMotion.maxAcceleration(ElevatorConstants.kMaxAcceleration);
+    m_elevatorConfig.closedLoop.maxMotion.maxVelocity(ElevatorConstants.kMaxVelocity);
+    m_elevatorConfig.closedLoop.maxMotion.allowedClosedLoopError(ElevatorConstants.kMaxError);
 
     m_elevator.configure(m_elevatorConfig, null, PersistMode.kPersistParameters);
-
 
   }
 
   @Override
   public void periodic() {
     if (m_isEnabled) {
-      m_elevatorPID.setReference(m_setPoint, ControlType.kPosition);
+      m_elevatorPID.setReference(m_setPoint, ControlType.kMAXMotionPositionControl);
     }
+    m_position = m_elevator.getEncoder().getPosition();
     // This method will be called once per scheduler run
   }
 
   public void setheight(double height) {
-    m_elevatorPID.setReference(height, ControlType.kPosition);
+    m_elevatorPID.setReference(m_setPoint, ControlType.kMAXMotionPositionControl);
   }
 
   public void MoveUp() {
@@ -73,6 +77,10 @@ public class Elevator extends SubsystemBase {
 
   public void ElevatorStop() {
     m_elevator.stopMotor();
+  }
+
+  public double getPosition() {
+    return m_position;
   }
 
 }

@@ -14,6 +14,20 @@ public class Constants {
     public class ElevatorConstants {
         public static int kElevatorID = 14;
 
+        public static double kP = 0.0025;
+        public static double kI = 0;
+        public static double kD = 0;
+        public static double kMaxVelocity = 0;
+        public static double kMaxAcceleration = 0;
+        public static double kMaxError = 0;
+
+        public static double kStageFour = 165.5;
+        public static double kStageThree = 90;
+        public static double kStageTwo = 32.7675;
+        public static double kStageOne = 5;
+        public static double kMaxHeight = 171;
+        public static double kMinHeight = 0;
+
 
     }
 
