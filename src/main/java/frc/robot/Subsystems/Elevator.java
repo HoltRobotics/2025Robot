@@ -42,6 +42,8 @@ public class Elevator extends SubsystemBase {
     m_elevatorConfig.closedLoop.maxMotion.maxVelocity(ElevatorConstants.kMaxVelocity);
     m_elevatorConfig.closedLoop.maxMotion.allowedClosedLoopError(ElevatorConstants.kMaxError);
 
+    m_elevatorConfig.encoder.positionConversionFactor(ElevatorConstants.kConvertionFactor);
+
     m_elevator.configure(m_elevatorConfig, null, PersistMode.kPersistParameters);
 
   }
