@@ -16,19 +16,25 @@ import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Commands.Arm.DownArm;
+import frc.robot.Commands.Arm.UpArm;
+import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Swerve;
 
 public class RobotContainer {
+    // Setting up max speeds for driving and turning
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+
     // Controllers
     private final PS5Controller m_driver = new PS5Controller(Constants.OIConstants.kDriverPort);
     private final Joystick m_operator = new Joystick(Constants.OIConstants.kOperatorPort);
 
     // Subsystems
     public final Swerve m_swerve = TunerConstants.createDrivetrain();
-
-    // Setting up max speeds for driving and turning
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+    public final Telemetry logger = new Telemetry(MaxSpeed);
+    public final Arm m_arm = new Arm();
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -39,18 +45,21 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
     configureSwerveBindings();
+
+    m_swerve.registerTelemetry(logger::telemeterize);
   }
 
   private void configureButtonBindings() {
-
+    new POVButton(m_driver, 270).whileTrue(new UpArm(m_arm));
+    new POVButton(m_driver, 90).whileTrue(new DownArm(m_arm));
   }
 
   private void configureSwerveBindings() {
     m_swerve.setDefaultCommand(
       m_swerve.applyRequest(() ->
-        drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed)
-             .withVelocityY(-m_driver.getLeftX() * MaxSpeed)
-             .withRotationalRate(m_driver.getRightX() * MaxAngularRate)
+        drive.withVelocityX(m_driver.getLeftY() * MaxSpeed)
+             .withVelocityY(m_driver.getLeftX() * MaxSpeed)
+             .withRotationalRate(-m_driver.getRightX() * MaxAngularRate)
       )
     );
 
