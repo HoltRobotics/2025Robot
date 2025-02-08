@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Subsystems.Swerve;
+import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
     // Setting up max speeds for driving and turning
