@@ -1,7 +1,7 @@
 package frc.robot.Commands.Elevator;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Subsystems.Elevator;
+import frc.robot.subsystems.Elevator;
 
 public class SetHeight extends InstantCommand {
     private Elevator m_elevator;
