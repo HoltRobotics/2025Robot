@@ -30,7 +30,7 @@ public class CoralManipulator extends SubsystemBase {
   SparkClosedLoopController m_artPid = m_articulation.getClosedLoopController();
 
   /** Creates a new shooter. */
-  public shooter() {
+  public CoralManipulator() {
     m_articulationConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     m_articulationConfig.closedLoop.pid(.001, 0, 0);
 
