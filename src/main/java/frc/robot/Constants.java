@@ -48,15 +48,8 @@ public class Constants {
         public static final int armMotorId = 20;
 
         public static final double kStowAngle = 0;
-        public static final double kStage1Angle = 170;
-        public static final double kStage2Angle = 32.8;
-        public static final double kStage3Angle = 80;
-        public static final double kHumanStageAngle = 22;
-        public static final double kTippedCoralAngle = 159.52;
         public static final double kMaxAngle = 180; // Change if we need a different max angle
-        public static final double kClawHeightOffset = 0.3;
-        public static final double kClawLengthOffset = 0.25;
-        public static final double kArmLength = 0.5;
+
 
         public static final double kP = 0.15;
         public static final double kI = 0;
