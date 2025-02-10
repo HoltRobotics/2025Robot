@@ -12,7 +12,7 @@ public class Constants {
     }
 
     public class ElevatorConstants {
-        public static int kElevatorID = 14;
+        public static int kElevatorID = 15;
 
         public static final double kP = 0.0025;
         public static final double kI = 0;
@@ -32,16 +32,22 @@ public class Constants {
 
     }
 
-    public class FunnelConstants {
-
-    }
-
     public class ClimberConstants {
         public static final int kClimberMotorID = 0;
     }
 
     public class CoralManipulatorConstants {
+        public static final int kWristMotorID = 16;
+        public static final int kIntakeMotorID = 17;
 
+        public static final double kStowAngle = 0; // TO-DO: Tune this
+        public static final double kStage1Angle = -135; // TO-DO: Tune this
+        public static final double kStage2Angle = -135;
+        public static final double kStage3Angle = -135;
+        public static final double kStage4Angle = -145;
+        public static final double kMaxAngle = 0;
+        public static final double kMinAngle = -90;
+        public static final double kIntakeAngle = -45;
     }
 
     public class ArmConstants{
