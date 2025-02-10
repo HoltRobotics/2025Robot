@@ -31,6 +31,7 @@ import frc.robot.Commands.Wrist.WristUp;
 import frc.robot.Constants.CoralManipulatorConstants;
 import frc.robot.Constants.ElevatorConstants;
 
+@SuppressWarnings("unused")
 public class RobotContainer {
     // Setting up max speeds for driving and turning
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
@@ -73,7 +74,7 @@ public class RobotContainer {
       // Manual Elevator Commands
     new JoystickButton(m_operator, 11).whileTrue(new MoveUp(m_elevator));
     new JoystickButton(m_operator, 12).whileTrue(new MoveDown(m_elevator));
-    new JoystickButton(m_operator, 22).onTrue(new StopElevator());
+    new JoystickButton(m_operator, 22).onTrue(new StopElevator(m_elevator));
 
     // Wrist Commands
       // PID Wrist Commands
