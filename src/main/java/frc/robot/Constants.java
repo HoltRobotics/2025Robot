@@ -12,7 +12,7 @@ public class Constants {
     }
 
     public class ElevatorConstants {
-        public static int kElevatorID = 14;
+        public static int kElevatorID = 15;
 
         public static final double kP = 0.0025;
         public static final double kI = 0;
