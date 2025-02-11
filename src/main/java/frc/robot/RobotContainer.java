@@ -16,7 +16,8 @@ import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.Swerve;
+import frc.robot.Subsystems.Elevator;
+import frc.robot.Subsystems.Swerve;
 import frc.robot.Telemetry;
 
 public class RobotContainer {
@@ -31,6 +32,7 @@ public class RobotContainer {
     // Subsystems
     public final Swerve m_swerve = TunerConstants.createDrivetrain();
     public final Telemetry logger = new Telemetry(MaxSpeed);
+    public final Elevator m_elevator = new Elevator();
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -46,7 +48,7 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    
+
   }
 
   private void configureSwerveBindings() {
