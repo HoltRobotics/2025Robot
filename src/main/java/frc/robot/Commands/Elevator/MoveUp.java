@@ -1,8 +1,8 @@
-package frc.robot.Commands.Elevator;
+package frc.robot.commands.Elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Subsystems.Elevator;
+import frc.robot.subsystems.Elevator;
 
 
 public class MoveUp extends Command {

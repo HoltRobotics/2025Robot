@@ -2,11 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Subsystems;
+package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.networktables.GenericEntry;
@@ -19,6 +21,7 @@ import frc.robot.Constants.ArmConstants;
 public class Arm extends SubsystemBase {
   private final SparkMax m_armMotor = new SparkMax(ArmConstants.armMotorId, MotorType.kBrushless);
   private final RelativeEncoder m_encoder;
+  SparkMaxConfig m_armConfig = new SparkMaxConfig();
 
 
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
@@ -31,7 +34,10 @@ public class Arm extends SubsystemBase {
   public Arm() {
     m_encoder = m_armMotor.getEncoder();
     m_encoder.setPosition(0);
+    m_armConfig.inverted(true);
     m_angleDisplay = m_tab.add("Arm Angle", getAngle()).getEntry();
+
+    m_armMotor.configure(m_armConfig, null, null);
   }
 
   public void useOutput(double output, TrapezoidProfile.State setpoint) {
