@@ -33,6 +33,7 @@ public class MoveDown extends Command {
     @Override
     public void end(boolean interrupted) {
         m_elevator.ElevatorStop();
+        m_elevator.EnablePID();
     }
 
     // Returns true when the command should end.

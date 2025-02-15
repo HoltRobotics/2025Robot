@@ -41,15 +41,19 @@ public class CoralManipulator extends SubsystemBase {
   m_shooterConfig.inverted(false);
   m_shooterConfig.idleMode(IdleMode.kBrake);
 
-  m_wristConfig.inverted(false);
+  m_wristConfig.inverted(true);
   m_wristConfig.idleMode(IdleMode.kBrake);
 
   m_shooter.configure(m_shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   m_wrist.configure(m_wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+  m_wrist.getEncoder().setPosition(0);
   }
 
   @Override
   public void periodic() {
+    m_wristPosition = m_wrist.getEncoder().getPosition();
+    System.out.println("angle" + m_wristPosition);
     //m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
     // This method will be called once per scheduler run
   }
@@ -65,25 +69,12 @@ public void shootStop() {
 
 }
 
-  public void shootL1() {
+  public void shoot() {
     m_shooter.set(1);
     //set angle
   }
 
-  public void shootL2() {
-    m_shooter.set(1);
-    //set angle
-  }
 
-  public void shootL3 () {
-    m_shooter.set(1);
-    //set angle
-  }
-
-  public void shootL4 () {
-    m_shooter.set(1);
-  
-  }
  public void setsetpoint (double newsetpoint) {
 m_artSetPoint = newsetpoint;
  }
@@ -102,6 +93,7 @@ public void wristUp () {
 
 public void wristDown () {
   m_wrist.set(-.1);
+  System.out.println("Method sees this");
 }
 
 public void wristStop () {

@@ -27,7 +27,8 @@ public class Elevator extends SubsystemBase {
 
   SparkClosedLoopController m_elevatorPID = m_elevator.getClosedLoopController();
 
-  double m_setPoint = 0;
+  // double m_setPoint = 0;
+  double m_setPoint;
 
   double m_position = m_elevator.getEncoder().getPosition();
 
@@ -56,14 +57,18 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     if (m_isEnabled) {
-      m_elevatorPID.setReference(m_setPoint, SparkBase.ControlType.kMAXMotionPositionControl);
+      m_elevatorPID.setReference(m_setPoint, ControlType.kPosition);
     }
-    m_position = m_elevator.getEncoder().getPosition();
-    // This method will be called once per scheduler run
+    // m_position = m_elevator.getEncoder().getPosition();
+    // // This method will be called once per scheduler run
+    // // System.out.println("set point " + m_setPoint);
+    // System.out.println("Position " + m_position);
   }
 
   public void setheight(double height) {
-    m_elevatorPID.setReference(m_setPoint, SparkBase.ControlType.kMAXMotionPositionControl);
+    m_setPoint = height;
+    m_elevatorPID.setReference(height, ControlType.kMAXMotionPositionControl);
+    System.out.println("function seen, " + height);
   }
 
   public void MoveUp() {

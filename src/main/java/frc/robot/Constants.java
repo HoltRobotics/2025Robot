@@ -14,18 +14,18 @@ public class Constants {
     public class ElevatorConstants {
         public static int kElevatorID = 15;
 
-        public static final double kP = 0.0025;
+        public static final double kP = 0.01;
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final double kMaxVelocity = 0;
-        public static final double kMaxAcceleration = 0;
-        public static final double kMaxError = 0;
+        public static final double kMaxVelocity = 100;
+        public static final double kMaxAcceleration = 100;
+        public static final double kMaxError = 1;
 
         public static final double kConvertionFactor = (( 16 / 1 ) / 6 + (3 / 4));
-        public static final double kStageFour = 165.5;
-        public static final double kStageThree = 90;
-        public static final double kStageTwo = 32.7675;
-        public static final double kStageOne = 5;
+        public static final double kStageFour = 167.9;
+        public static final double kStageThree = 92.5;
+        public static final double kStageTwo = 35.1;
+        public static final double kStageOne = 5.71;
         public static final double kMaxHeight = 171;
         public static final double kMinHeight = 0;
 
@@ -42,9 +42,9 @@ public class Constants {
 
         public static final double kStowAngle = 0; // TO-DO: Tune this
         public static final double kStage1Angle = -135; // TO-DO: Tune this
-        public static final double kStage2Angle = -135;
-        public static final double kStage3Angle = -135;
-        public static final double kStage4Angle = -145;
+        public static final double kStage2Angle = -5.9;
+        public static final double kStage3Angle = -5.1;
+        public static final double kStage4Angle = -5;
         public static final double kMaxAngle = 0;
         public static final double kMinAngle = -90;
         public static final double kIntakeAngle = -45;

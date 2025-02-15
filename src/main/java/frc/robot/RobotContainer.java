@@ -8,6 +8,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import javax.naming.directory.SearchControls;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -16,14 +18,11 @@ import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-// <<<<<<< HEAD
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Swerve;
-// =======
 import frc.robot.Subsystems.CoralManipulator;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Swerve;
-//>>>>>>> 34e71b25a69fcce114d590df6b185e91b01c223b ???
 import frc.robot.Telemetry;
 import frc.robot.Commands.Elevator.MoveDown;
 import frc.robot.Commands.Elevator.MoveUp;
@@ -33,6 +32,8 @@ import frc.robot.Commands.Wrist.SetWrist;
 import frc.robot.Commands.Wrist.WristDown;
 import frc.robot.Commands.Wrist.WristStop;
 import frc.robot.Commands.Wrist.WristUp;
+import frc.robot.Commands.Wrist.intake;
+import frc.robot.Commands.Wrist.shoot;
 import frc.robot.Constants.CoralManipulatorConstants;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -66,9 +67,7 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-// <<<<<<< HEAD
 
-// =======
     // Combo Commands
 
     // Elevator Commands
@@ -94,12 +93,13 @@ public class RobotContainer {
     new JoystickButton(m_operator, 13).whileTrue(new WristUp(m_manipulator));
     new JoystickButton(m_operator, 14).whileTrue(new WristDown(m_manipulator));
     new JoystickButton(m_operator, 20).onTrue(new WristStop(m_manipulator));
-    
+    new JoystickButton(m_operator, 15).whileTrue(new shoot(m_manipulator));
+    new JoystickButton(m_operator, 16).whileTrue(new intake(m_manipulator));
+
     // Climber Commands
       // PID Climber Commands
 
       // Manual Climber Commands
-// >>>>>>> 34e71b25a69fcce114d590df6b185e91b01c223b ???
   }
 
   private void configureSwerveBindings() {
