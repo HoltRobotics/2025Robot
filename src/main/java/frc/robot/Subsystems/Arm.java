@@ -62,14 +62,14 @@ public class Arm extends SubsystemBase {
    * Method for forcing the arm to move up.
    */
   public void up() {
-    m_armMotor.set(-0.25); // Sets the speed of the motor to -1/4.
+    m_armMotor.set(-0.75); // Sets the speed of the motor to -1/4.
   }
 
   /**
    * Method for forcing the arm to move down.
    */
   public void down() {
-    m_armMotor.set(0.25); // Sets the speed of the motor to 1/4.
+    m_armMotor.set(0.75); // Sets the speed of the motor to 1/4.
   }
 
   public boolean getInMotion() {
@@ -98,5 +98,9 @@ public class Arm extends SubsystemBase {
     if(getAngle() > m_setPoint - 0.1 && getAngle() < m_setPoint + 0.1) {
       m_inMotion = false;
     }
+  }
+
+  public void stop(){
+    m_armMotor.set(0);
   }
 }

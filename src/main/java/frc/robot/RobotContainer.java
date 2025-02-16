@@ -20,10 +20,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Swerve;
+import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.CoralManipulator;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Swerve;
 import frc.robot.Telemetry;
+import frc.robot.Commands.Arm.DownArm;
+import frc.robot.Commands.Arm.UpArm;
 import frc.robot.Commands.Elevator.MoveDown;
 import frc.robot.Commands.Elevator.MoveUp;
 import frc.robot.Commands.Elevator.SetHeight;
@@ -49,6 +52,7 @@ public class RobotContainer {
 
     // Subsystems
     public final Elevator m_elevator = new Elevator();
+    public final Arm m_arm = new Arm();
     public final CoralManipulator m_manipulator = new CoralManipulator();
     public final Swerve m_swerve = TunerConstants.createDrivetrain();
     public final Telemetry logger = new Telemetry(MaxSpeed);
@@ -67,8 +71,6 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-
-    // Combo Commands
 
     // Elevator Commands
       // PID Height Commands
@@ -100,6 +102,8 @@ public class RobotContainer {
       // PID Climber Commands
 
       // Manual Climber Commands
+      new JoystickButton(m_driver, PS5Controller.Button.kTriangle.value).whileTrue(new UpArm(m_arm));
+      new JoystickButton(m_driver, PS5Controller.Button.kSquare.value).whileTrue(new DownArm(m_arm));
   }
 
   private void configureSwerveBindings() {

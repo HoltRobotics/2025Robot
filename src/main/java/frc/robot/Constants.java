@@ -26,6 +26,7 @@ public class Constants {
         public static final double kStageThree = 92.5;
         public static final double kStageTwo = 35.1;
         public static final double kStageOne = 5.71;
+        public static final double kIntake = 0;
         public static final double kMaxHeight = 171;
         public static final double kMinHeight = 0;
 
@@ -51,7 +52,7 @@ public class Constants {
     }
 
     public class ArmConstants{
-        public static final int armMotorId = 20;
+        public static final int armMotorId = 14;
 
         public static final double kStowAngle = 0;
         public static final double kStage1Angle = 170;
