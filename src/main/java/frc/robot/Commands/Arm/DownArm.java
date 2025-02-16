@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Commands.Arm;
+package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ArmConstants;
@@ -34,10 +34,11 @@ public class DownArm extends Command {
   @Override
   public void end(boolean interrupted) {
     if (m_pastLimit){
-      m_arm.setAngle(0);
+      m_arm.setAngle(ArmConstants.kMaxAngle);
     } else {
       m_arm.setAngle(m_arm.getAngle());
     }
+    m_arm.stop();
   }
 
   // Returns true when the command should end.

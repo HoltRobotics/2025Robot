@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.networktables.GenericEntry;
@@ -19,6 +21,7 @@ import frc.robot.Constants.ArmConstants;
 public class Arm extends SubsystemBase {
   private final SparkMax m_armMotor = new SparkMax(ArmConstants.armMotorId, MotorType.kBrushless);
   private final RelativeEncoder m_encoder;
+  SparkMaxConfig m_armConfig = new SparkMaxConfig();
 
 
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
@@ -31,7 +34,10 @@ public class Arm extends SubsystemBase {
   public Arm() {
     m_encoder = m_armMotor.getEncoder();
     m_encoder.setPosition(0);
+    m_armConfig.inverted(true);
     m_angleDisplay = m_tab.add("Arm Angle", getAngle()).getEntry();
+
+    m_armMotor.configure(m_armConfig, null, null);
   }
 
   public void useOutput(double output, TrapezoidProfile.State setpoint) {
@@ -64,14 +70,14 @@ public class Arm extends SubsystemBase {
    * Method for forcing the arm to move up.
    */
   public void up() {
-    m_armMotor.set(-0.25); // Sets the speed of the motor to -1/4.
+    m_armMotor.set(-0.75); // Sets the speed of the motor to -3/4.
   }
 
   /**
    * Method for forcing the arm to move down.
    */
   public void down() {
-    m_armMotor.set(0.25); // Sets the speed of the motor to 1/4.
+    m_armMotor.set(0.75); // Sets the speed of the motor to 3/4.
   }
 
   public boolean getInMotion() {
@@ -85,6 +91,10 @@ public class Arm extends SubsystemBase {
 
   public void setSpeed(double speed) {
     m_armMotor.set(speed);
+  }
+
+  public void stop(){
+    m_armMotor.set(0);
   }
 
   @Override
