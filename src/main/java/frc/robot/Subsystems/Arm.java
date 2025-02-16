@@ -100,7 +100,7 @@ public class Arm extends SubsystemBase {
     }
   }
 
-  public void stop(){
+  public void stopArm(){
     m_armMotor.set(0);
   }
 }

@@ -18,12 +18,13 @@ import frc.robot.Subsystems.Elevator;
 public class LevelTwo extends ParallelCommandGroup {
   CoralManipulator m_Manipulator;
   Elevator m_Elevator;
-  
+
   /** Creates a new LevelTwo. */
   public LevelTwo(CoralManipulator manipulator, Elevator elevator) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new SetWrist(manipulator, CoralManipulatorConstants.kStage2Angle));
+    System.out.println("Getting through command group");
+    addCommands(new SetWrist(CoralManipulatorConstants.kStage2Angle, manipulator));
     addCommands(new SetHeight(ElevatorConstants.kStageTwo, elevator));
   }
 }

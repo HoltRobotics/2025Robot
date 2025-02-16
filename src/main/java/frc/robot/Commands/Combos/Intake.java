@@ -25,6 +25,6 @@ public class Intake extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands( new SetHeight(ElevatorConstants.kIntake, elevator));
-    addCommands( new SetWrist(manipulator, CoralManipulatorConstants.kIntakeAngle));
+    addCommands(new SetWrist(CoralManipulatorConstants.kIntakeAngle, manipulator));
   }
 }

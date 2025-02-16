@@ -11,12 +11,14 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import javax.naming.directory.SearchControls;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.SysIdSwerveTranslation;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Swerve;
@@ -26,7 +28,11 @@ import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Swerve;
 import frc.robot.Telemetry;
 import frc.robot.Commands.Arm.DownArm;
+import frc.robot.Commands.Arm.StopArm;
 import frc.robot.Commands.Arm.UpArm;
+import frc.robot.Commands.Combos.Intake;
+import frc.robot.Commands.Combos.LevelFour;
+import frc.robot.Commands.Combos.LevelTwo;
 import frc.robot.Commands.Elevator.MoveDown;
 import frc.robot.Commands.Elevator.MoveUp;
 import frc.robot.Commands.Elevator.SetHeight;
@@ -87,9 +93,9 @@ public class RobotContainer {
 
     // Wrist Commands
       // PID Wrist Commands
-    new JoystickButton(m_operator, 17).onTrue(new SetWrist(m_manipulator, CoralManipulatorConstants.kStage1Angle));
-    new JoystickButton(m_operator, 18).onTrue(new SetWrist(m_manipulator, CoralManipulatorConstants.kIntakeAngle));
-    new JoystickButton(m_operator, 19).onTrue(new SetWrist(m_manipulator, CoralManipulatorConstants.kStowAngle));
+    new JoystickButton(m_operator, 5).onTrue(new SetWrist(CoralManipulatorConstants.kStage2Angle, m_manipulator));
+    // new JoystickButton(m_operator, 4).onTrue(new SetWrist(m_manipulator, CoralManipulatorConstants.kIntakeAngle));
+    // new JoystickButton(m_operator, 19).onTrue(new SetWrist(m_manipulator, CoralManipulatorConstants.kStowAngle));
 
       // Manual Wrist Commands
     new JoystickButton(m_operator, 13).whileTrue(new WristUp(m_manipulator));
@@ -98,12 +104,17 @@ public class RobotContainer {
     new JoystickButton(m_operator, 15).whileTrue(new shoot(m_manipulator));
     new JoystickButton(m_operator, 16).whileTrue(new intake(m_manipulator));
 
+    //combo comands
+    new JoystickButton(m_operator, 1).onTrue(new LevelFour(m_elevator, m_manipulator));
+    new JoystickButton(m_operator, 2).onTrue(new LevelTwo(m_manipulator, m_elevator));
+    new JoystickButton(m_operator, 4).onTrue(new Intake(m_elevator, m_manipulator));
+
     // Climber Commands
       // PID Climber Commands
 
       // Manual Climber Commands
-      new JoystickButton(m_driver, PS5Controller.Button.kTriangle.value).whileTrue(new UpArm(m_arm));
-      new JoystickButton(m_driver, PS5Controller.Button.kSquare.value).whileTrue(new DownArm(m_arm));
+      new JoystickButton(m_driver, PS5Controller.Button.kTriangle.value).whileTrue(new UpArm(m_arm)).onFalse(new StopArm(m_arm));
+      new JoystickButton(m_driver, PS5Controller.Button.kSquare.value).whileTrue(new DownArm(m_arm)).onFalse(new StopArm(m_arm));
   }
 
   private void configureSwerveBindings() {

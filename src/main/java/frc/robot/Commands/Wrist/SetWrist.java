@@ -7,15 +7,11 @@ package frc.robot.Commands.Wrist;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Subsystems.CoralManipulator;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class SetWrist extends InstantCommand {
-  private final CoralManipulator m_manipulator;
-  private final double m_angle;
+  private CoralManipulator m_manipulator;
+  private double m_angle;
 
-  public SetWrist(CoralManipulator manipulator, double angle) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public SetWrist(double angle, CoralManipulator manipulator) {
     m_manipulator = manipulator;
     m_angle = angle;
     addRequirements(manipulator);
@@ -24,6 +20,8 @@ public class SetWrist extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("SetWrist is running");
+    m_manipulator.enablePID();
     m_manipulator.setAngle(m_angle);
   }
 }

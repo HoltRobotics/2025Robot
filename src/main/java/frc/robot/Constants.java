@@ -24,9 +24,9 @@ public class Constants {
         public static final double kConvertionFactor = (( 16 / 1 ) / 6 + (3 / 4));
         public static final double kStageFour = 167.9;
         public static final double kStageThree = 92.5;
-        public static final double kStageTwo = 35.1;
+        public static final double kStageTwo = 37;
         public static final double kStageOne = 5.71;
-        public static final double kIntake = 0;
+        public static final double kIntake = 2;
         public static final double kMaxHeight = 171;
         public static final double kMinHeight = 0;
 
@@ -41,14 +41,14 @@ public class Constants {
         public static final int kWristMotorID = 16;
         public static final int kIntakeMotorID = 17;
 
-        public static final double kStowAngle = 0; // TO-DO: Tune this
-        public static final double kStage1Angle = -135; // TO-DO: Tune this
-        public static final double kStage2Angle = -5.9;
-        public static final double kStage3Angle = -5.1;
-        public static final double kStage4Angle = -5;
-        public static final double kMaxAngle = 0;
-        public static final double kMinAngle = -90;
-        public static final double kIntakeAngle = -45;
+        public static final double kStowAngle = 5; // TO-DO: Tune this
+        public static final double kStage1Angle = 10; // TO-DO: Tune this
+        public static final double kStage2Angle = 10;
+        public static final double kStage3Angle = 10;
+        public static final double kStage4Angle = 11;
+        public static final double kMaxAngle = 14.75;
+        public static final double kMinAngle = 0;
+        public static final double kIntakeAngle = 14;
     }
 
     public class ArmConstants{

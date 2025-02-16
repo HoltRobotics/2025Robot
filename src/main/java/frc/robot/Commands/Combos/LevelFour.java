@@ -25,6 +25,6 @@ public class LevelFour extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands( new SetHeight(ElevatorConstants.kStageFour, elevator));
-    addCommands( new SetWrist(manipulator, CoralManipulatorConstants.kStage4Angle));
+    addCommands(new SetWrist(CoralManipulatorConstants.kStage4Angle, manipulator));
   }
 }

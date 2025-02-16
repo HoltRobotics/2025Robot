@@ -26,6 +26,6 @@ public class LevelThree extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands( new SetHeight(ElevatorConstants.kStageThree, elevator));
-    addCommands( new SetWrist(manipulator, CoralManipulatorConstants.kStage3Angle));
+    addCommands(new SetWrist(CoralManipulatorConstants.kStage3Angle, manipulator));
   }
 }

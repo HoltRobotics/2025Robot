@@ -13,9 +13,11 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralManipulatorConstants;
+import frc.robot.Constants.ElevatorConstants;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class CoralManipulator extends SubsystemBase {
@@ -30,32 +32,42 @@ public class CoralManipulator extends SubsystemBase {
 
   double m_wristPosition = m_wrist.getEncoder().getPosition();
   double m_artSetPoint = 0;
+  boolean m_isEnabled = true;
 
   SparkClosedLoopController m_wristPid = m_wrist.getClosedLoopController();
 
   /** Creates a new shooter. */
   public CoralManipulator() {
     m_wristConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-    m_wristConfig.closedLoop.pid(.001, 0, 0);
+    m_wristConfig.closedLoop.pid(.1, 0, 0);
 
-  m_shooterConfig.inverted(false);
-  m_shooterConfig.idleMode(IdleMode.kBrake);
+    m_wristConfig.closedLoop.maxMotion.maxAcceleration(ElevatorConstants.kMaxAcceleration);
+    m_wristConfig.closedLoop.maxMotion.maxVelocity(ElevatorConstants.kMaxVelocity);
+    m_wristConfig.closedLoop.maxMotion.allowedClosedLoopError(ElevatorConstants.kMaxError);
+    m_wristConfig.closedLoop.maxMotion.positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal);
 
-  m_wristConfig.inverted(true);
-  m_wristConfig.idleMode(IdleMode.kBrake);
+    m_shooterConfig.inverted(false);
+    m_shooterConfig.idleMode(IdleMode.kBrake);
 
-  m_shooter.configure(m_shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-  m_wrist.configure(m_wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_wristConfig.inverted(true);
+    m_wristConfig.idleMode(IdleMode.kBrake);
 
-  m_wrist.getEncoder().setPosition(0);
+    m_shooter.configure(m_shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_wrist.configure(m_wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    m_wrist.getEncoder().setPosition(0);
   }
 
   @Override
   public void periodic() {
     m_wristPosition = m_wrist.getEncoder().getPosition();
-    System.out.println("angle" + m_wristPosition);
+    System.out.println(m_wristPosition);
+    // System.out.println("angle" + m_wristPosition);
     //m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
     // This method will be called once per scheduler run
+    // if (m_isEnabled = true) {
+    //   m_wrist.getClosedLoopController().setReference(m_wrist.getEncoder().getPosition(), ControlType.kMAXMotionPositionControl);
+    // }
   }
 
 
@@ -99,7 +111,18 @@ public void wristDown () {
 public void wristStop () {
   m_wrist.stopMotor();
 }
+
+public void enablePID() {
+  m_isEnabled = true;
+}
+
+public void disablePID() {
+  m_isEnabled = false;
+}
 public void setAngle (double angle) {
-  m_wristPid.setReference(angle, ControlType.kPosition);
+  m_artSetPoint = angle;
+  m_wristPid.setReference(angle, ControlType.kMAXMotionPositionControl);
+  System.out.println("Method in subsystem is seeing this" + angle);
+  System.out.println("Setpoint: " + m_artSetPoint);
 }
 }
