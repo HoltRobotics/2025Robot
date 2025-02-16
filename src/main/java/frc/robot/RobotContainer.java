@@ -52,8 +52,8 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // In case this doesn't work, please e-stop
-    new JoystickButton(m_operator, 1).onTrue(new UpArm(m_arm));
-    new JoystickButton(m_operator, 2).onTrue(new DownArm(m_arm));
+    new JoystickButton(m_operator, 1).whileTrue(new UpArm(m_arm));
+    new JoystickButton(m_operator, 2).whileTrue(new DownArm(m_arm));
   }
 
   private void configureSwerveBindings() {

@@ -37,6 +37,7 @@ public class UpArm extends Command {
     } else {
       m_arm.setAngle(m_arm.getAngle());
     }
+    m_arm.stop();
   }
 
   // Returns true when the command should end.
