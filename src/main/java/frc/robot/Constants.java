@@ -22,11 +22,11 @@ public class Constants {
         public static final double kMaxError = 1;
 
         public static final double kConvertionFactor = (( 16 / 1 ) / 6 + (3 / 4));
-        public static final double kStageFour = 167.9;
-        public static final double kStageThree = 92.5;
-        public static final double kStageTwo = 37;
+        public static final double kStageFour = 166.578;
+        public static final double kStageThree = 86;
+        public static final double kStageTwo = 2.571;
         public static final double kStageOne = 5.71;
-        public static final double kIntake = 2;
+        public static final double kIntake = 10;
         public static final double kMaxHeight = 171;
         public static final double kMinHeight = 0;
 
@@ -43,12 +43,15 @@ public class Constants {
 
         public static final double kStowAngle = 5; // TO-DO: Tune this
         public static final double kStage1Angle = 10; // TO-DO: Tune this
-        public static final double kStage2Angle = 10;
-        public static final double kStage3Angle = 10;
+        public static final double kStage2Angle = 7.595;
+        public static final double kStage3Angle = 8.428;
         public static final double kStage4Angle = 11;
         public static final double kMaxAngle = 14.75;
         public static final double kMinAngle = 0;
         public static final double kIntakeAngle = 14;
+        public static final double kMaxVelocity = 1000;
+        public static final double kMaxAcceleration = 1000;
+        public static final double kMaxAllowedError = 0.01;
     }
 
     public class ArmConstants{

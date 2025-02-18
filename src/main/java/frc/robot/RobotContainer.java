@@ -32,6 +32,7 @@ import frc.robot.Commands.Arm.StopArm;
 import frc.robot.Commands.Arm.UpArm;
 import frc.robot.Commands.Combos.Intake;
 import frc.robot.Commands.Combos.LevelFour;
+import frc.robot.Commands.Combos.LevelThree;
 import frc.robot.Commands.Combos.LevelTwo;
 import frc.robot.Commands.Elevator.MoveDown;
 import frc.robot.Commands.Elevator.MoveUp;
@@ -93,7 +94,6 @@ public class RobotContainer {
 
     // Wrist Commands
       // PID Wrist Commands
-    new JoystickButton(m_operator, 5).onTrue(new SetWrist(CoralManipulatorConstants.kStage2Angle, m_manipulator));
     // new JoystickButton(m_operator, 4).onTrue(new SetWrist(m_manipulator, CoralManipulatorConstants.kIntakeAngle));
     // new JoystickButton(m_operator, 19).onTrue(new SetWrist(m_manipulator, CoralManipulatorConstants.kStowAngle));
 
@@ -105,9 +105,11 @@ public class RobotContainer {
     new JoystickButton(m_operator, 16).whileTrue(new intake(m_manipulator));
 
     //combo comands
-    new JoystickButton(m_operator, 1).onTrue(new LevelFour(m_elevator, m_manipulator));
+    new JoystickButton(m_operator, 4).onTrue(new LevelFour(m_elevator, m_manipulator));
     new JoystickButton(m_operator, 2).onTrue(new LevelTwo(m_manipulator, m_elevator));
-    new JoystickButton(m_operator, 4).onTrue(new Intake(m_elevator, m_manipulator));
+    new JoystickButton(m_operator, 3).onTrue(new LevelThree(m_elevator, m_manipulator));
+    //new JoystickButton(m_operator, 1).onTrue
+    new JoystickButton(m_operator, 5).onTrue(new Intake(m_elevator, m_manipulator));
 
     // Climber Commands
       // PID Climber Commands

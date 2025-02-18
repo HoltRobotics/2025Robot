@@ -59,10 +59,10 @@ public class Elevator extends SubsystemBase {
     if (m_isEnabled) {
       m_elevatorPID.setReference(m_setPoint, ControlType.kPosition);
     }
-    // m_position = m_elevator.getEncoder().getPosition();
+    m_position = m_elevator.getEncoder().getPosition();
     // // This method will be called once per scheduler run
     // // System.out.println("set point " + m_setPoint);
-    // System.out.println("Position " + m_position);
+     System.out.println("Elevator position " + m_position);
   }
 
   public void setheight(double height) {

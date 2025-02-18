@@ -41,9 +41,9 @@ public class CoralManipulator extends SubsystemBase {
     m_wristConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     m_wristConfig.closedLoop.pid(.1, 0, 0);
 
-    m_wristConfig.closedLoop.maxMotion.maxAcceleration(ElevatorConstants.kMaxAcceleration);
-    m_wristConfig.closedLoop.maxMotion.maxVelocity(ElevatorConstants.kMaxVelocity);
-    m_wristConfig.closedLoop.maxMotion.allowedClosedLoopError(ElevatorConstants.kMaxError);
+    m_wristConfig.closedLoop.maxMotion.maxAcceleration(CoralManipulatorConstants.kMaxAcceleration);
+    m_wristConfig.closedLoop.maxMotion.maxVelocity(CoralManipulatorConstants.kMaxVelocity);
+    m_wristConfig.closedLoop.maxMotion.allowedClosedLoopError(CoralManipulatorConstants.kMaxAllowedError);
     m_wristConfig.closedLoop.maxMotion.positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal);
 
     m_shooterConfig.inverted(false);
@@ -61,7 +61,7 @@ public class CoralManipulator extends SubsystemBase {
   @Override
   public void periodic() {
     m_wristPosition = m_wrist.getEncoder().getPosition();
-    System.out.println(m_wristPosition);
+    System.out.println("Wrist angle " + m_wristPosition);
     // System.out.println("angle" + m_wristPosition);
     //m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
     // This method will be called once per scheduler run
@@ -78,7 +78,6 @@ public class CoralManipulator extends SubsystemBase {
 
 public void shootStop() {
   m_shooter.stopMotor();
-
 }
 
   public void shoot() {
