@@ -20,7 +20,15 @@ public class Constants {
     }
 
     public class ClimberConstants {
-        public static final int kClimberMotorID = 0;
+      public static final int kClimberMotorID = 0; // motorID of the climber motor
+      public static final double kInwardAngle = 0; // sets what angle to go to when rotating inward
+      public static final double kOutwardAngle = 0; // sets what angle to go to when rotating outward
+      public static final double kMaxAcceleration = 0;
+      public static final double kMaxVelocity = 0;
+      public static final double kMaxError = 0;
+      public static final double kP = 1;
+      public static final double kI = 0;
+      public static final double kD = 0;
     }
 
     public class CoralManipulatorConstants {
