@@ -12,7 +12,10 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
-
+/**
+ * @deprecated Use {@link frc.robot.subsystems.Arm} instead.
+ * At least, I assume this file isn't being used
+ */
 public class Climber extends SubsystemBase {
 
   SparkMax m_ClimberMotor = new SparkMax(ClimberConstants.kClimberMotorID, MotorType.kBrushless);
