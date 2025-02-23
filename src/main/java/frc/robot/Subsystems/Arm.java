@@ -4,9 +4,14 @@
 
 package frc.robot.Subsystems;
 
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -16,11 +21,16 @@ import frc.robot.Constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
   private final SparkMax m_armMotor = new SparkMax(ArmConstants.armMotorId, MotorType.kBrushless);
+  private final SparkMax m_followingMotor = new SparkMax(ArmConstants.followingMotorId, MotorType.kBrushless);
   private final RelativeEncoder m_encoder;
+  
+  SparkMaxConfig m_armConfig = new SparkMaxConfig();
+  SparkMaxConfig m_followerConfig = new SparkMaxConfig();
 
 
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
   private final GenericEntry m_angleDisplay;
+  private final SparkClosedLoopController m_climberPid = m_armMotor.getClosedLoopController();
 
   public boolean m_inMotion = false;
   private double m_setPoint = 0;
@@ -29,7 +39,11 @@ public class Arm extends SubsystemBase {
   public Arm() {
     m_encoder = m_armMotor.getEncoder();
     m_encoder.setPosition(0);
+    m_armConfig.closedLoop.pid(0.100, 0, 0);
+    m_armConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     m_angleDisplay = m_tab.add("Arm Angle", getAngle()).getEntry();
+    m_followerConfig.follow(m_armMotor, true);
+    m_followingMotor.configure(m_followerConfig, null, null);
   }
 
   public void useOutput(double output, TrapezoidProfile.State setpoint) {
@@ -62,14 +76,14 @@ public class Arm extends SubsystemBase {
    * Method for forcing the arm to move up.
    */
   public void up() {
-    m_armMotor.set(-0.75); // Sets the speed of the motor to -1/4.
+    m_armMotor.set(-0.4); // Sets the speed of the motor to -1/4.
   }
 
   /**
    * Method for forcing the arm to move down.
    */
   public void down() {
-    m_armMotor.set(0.75); // Sets the speed of the motor to 1/4.
+    m_armMotor.set(0.4); // Sets the speed of the motor to 1/4.
   }
 
   public boolean getInMotion() {
@@ -102,5 +116,9 @@ public class Arm extends SubsystemBase {
 
   public void stopArm(){
     m_armMotor.set(0);
+  }
+
+  public void armAngle(double angle){
+    m_climberPid.setReference(angle, ControlType.kPosition);
   }
 }

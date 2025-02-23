@@ -38,10 +38,11 @@ public class WristUp extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_manipulator.getPosition() > CoralManipulatorConstants.kMaxAngle) {
-      return true;
-    } else {
-      return false;
-    }
+    // if (m_manipulator.getPosition() > CoralManipulatorConstants.kMaxAngle) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    return false;
   }
 }

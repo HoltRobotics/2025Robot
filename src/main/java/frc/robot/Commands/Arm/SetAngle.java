@@ -24,5 +24,6 @@ public class SetAngle extends InstantCommand {
   public void initialize() {
     m_arm.setInMotion(true);
     m_arm.setAngle(m_angle);
+    m_arm.armAngle(m_angle);
   }
 }

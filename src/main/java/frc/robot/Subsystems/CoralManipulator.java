@@ -38,6 +38,8 @@ public class CoralManipulator extends SubsystemBase {
 
   /** Creates a new shooter. */
   public CoralManipulator() {
+    // m_wristConfig.encoder.positionConversionFactor(1 / 125);
+
     m_wristConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     m_wristConfig.closedLoop.pid(.1, 0, 0);
 
@@ -61,8 +63,8 @@ public class CoralManipulator extends SubsystemBase {
   @Override
   public void periodic() {
     m_wristPosition = m_wrist.getEncoder().getPosition();
-    System.out.println("Wrist angle " + m_wristPosition);
-    // System.out.println("angle" + m_wristPosition);
+    // System.out.println("Wrist angle " + m_wristPosition);
+    System.out.println("angle" + m_wristPosition);
     //m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
     // This method will be called once per scheduler run
     // if (m_isEnabled = true) {
@@ -99,11 +101,11 @@ public double getsetpoint () {
 }
 
 public void wristUp () {
-  m_wrist.set(.1);
+  m_wrist.set(.2);
 }
 
 public void wristDown () {
-  m_wrist.set(-.1);
+  m_wrist.set(-.2);
   System.out.println("Method sees this");
 }
 

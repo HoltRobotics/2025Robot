@@ -28,6 +28,7 @@ import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Swerve;
 import frc.robot.Telemetry;
 import frc.robot.Commands.Arm.DownArm;
+import frc.robot.Commands.Arm.SetAngle;
 import frc.robot.Commands.Arm.StopArm;
 import frc.robot.Commands.Arm.UpArm;
 import frc.robot.Commands.Combos.Intake;
@@ -110,6 +111,7 @@ public class RobotContainer {
     new JoystickButton(m_operator, 3).onTrue(new LevelThree(m_elevator, m_manipulator));
     //new JoystickButton(m_operator, 1).onTrue
     new JoystickButton(m_operator, 5).onTrue(new Intake(m_elevator, m_manipulator));
+    new JoystickButton(m_operator, 21).onTrue(new SetAngle(5, m_arm));
 
     // Climber Commands
       // PID Climber Commands
@@ -122,9 +124,9 @@ public class RobotContainer {
   private void configureSwerveBindings() {
     m_swerve.setDefaultCommand(
       m_swerve.applyRequest(() ->
-        drive.withVelocityX(m_driver.getLeftY() * MaxSpeed)
-             .withVelocityY(m_driver.getLeftX() * MaxSpeed)
-             .withRotationalRate(-m_driver.getRightX() * MaxAngularRate)
+        drive.withVelocityX(m_driver.getLeftY() * MaxSpeed * 0.7)
+             .withVelocityY(-m_driver.getLeftX() * MaxSpeed * 0.7)
+             .withRotationalRate(m_driver.getRightX() * MaxAngularRate)
       )
     );
 
