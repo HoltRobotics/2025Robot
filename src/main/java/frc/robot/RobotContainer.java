@@ -20,12 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Subsystems.Elevator;
-import frc.robot.Subsystems.Swerve;
-import frc.robot.Subsystems.Arm;
-import frc.robot.Subsystems.CoralManipulator;
-import frc.robot.Subsystems.Elevator;
-import frc.robot.Subsystems.Swerve;
 import frc.robot.Telemetry;
 import frc.robot.Commands.Arm.DownArm;
 import frc.robot.Commands.Arm.SetAngle;
@@ -47,6 +41,10 @@ import frc.robot.Commands.Wrist.intake;
 import frc.robot.Commands.Wrist.shoot;
 import frc.robot.Constants.CoralManipulatorConstants;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Subsystems.Arm;
+import frc.robot.Subsystems.CoralManipulator;
+import frc.robot.Subsystems.Elevator;
+import frc.robot.Subsystems.Swerve;
 
 @SuppressWarnings("unused")
 public class RobotContainer {
