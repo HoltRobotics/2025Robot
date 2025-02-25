@@ -23,7 +23,6 @@ CoralManipulator m_manipulator;
   public Intake(Elevator elevator, CoralManipulator manipulator) {
     m_elevator = elevator;
     m_manipulator = manipulator;
-    addRequirements(manipulator, elevator);
     addCommands(new SetWrist(CoralManipulatorConstants.kIntakeAngle, manipulator));
     addCommands(new SetHeight(ElevatorConstants.kIntake, elevator));
   }

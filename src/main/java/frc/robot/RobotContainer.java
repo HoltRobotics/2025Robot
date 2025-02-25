@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Telemetry;
+import frc.robot.Commands.RegDrive;
+import frc.robot.Commands.SlowDrive;
 import frc.robot.Commands.Arm.DownArm;
 import frc.robot.Commands.Arm.SetAngle;
 import frc.robot.Commands.Arm.StopArm;
@@ -51,6 +53,7 @@ public class RobotContainer {
     // Setting up max speeds for driving and turning
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+    private double slowDrive = 0.0;
 
     // Controllers
     private final PS5Controller m_driver = new PS5Controller(Constants.OIConstants.kDriverPort);
@@ -102,6 +105,8 @@ public class RobotContainer {
     new JoystickButton(m_operator, 20).onTrue(new WristStop(m_manipulator));
     new JoystickButton(m_operator, 15).whileTrue(new shoot(m_manipulator));
     new JoystickButton(m_operator, 16).whileTrue(new intake(m_manipulator));
+    new JoystickButton(m_driver, PS5Controller.Button.kL1.value).whileTrue(new intake(m_manipulator));
+    new JoystickButton(m_driver, PS5Controller.Button.kCross.value).whileTrue(new shoot(m_manipulator));
 
     //combo comands
     new JoystickButton(m_operator, 4).onTrue(new LevelFour(m_elevator, m_manipulator));
@@ -122,14 +127,16 @@ public class RobotContainer {
   private void configureSwerveBindings() {
     m_swerve.setDefaultCommand(
       m_swerve.applyRequest(() ->
-        drive.withVelocityX(m_driver.getLeftY() * MaxSpeed * 0.7)
-             .withVelocityY(-m_driver.getLeftX() * MaxSpeed * 0.7)
-             .withRotationalRate(m_driver.getRightX() * MaxAngularRate)
+        drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed * m_swerve.slowDrive)
+             .withVelocityY(-m_driver.getLeftX() * MaxSpeed * m_swerve.slowDrive)
+             .withRotationalRate(m_driver.getRightX() * MaxAngularRate * m_swerve.slowDrive)
       )
     );
 
     new JoystickButton(m_driver, PS5Controller.Button.kOptions.value).onTrue(m_swerve.runOnce(() -> m_swerve.seedFieldCentric()));
     new JoystickButton(m_driver, PS5Controller.Button.kR3.value).whileTrue(m_swerve.applyRequest(() -> brake));
+
+    new JoystickButton(m_driver, PS5Controller.Button.kR1.value).whileTrue(new SlowDrive(m_swerve, 0.2)).onFalse(new RegDrive(m_swerve, 1));
   }
 
   public Command getAutonomousCommand() {

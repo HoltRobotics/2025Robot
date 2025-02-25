@@ -39,7 +39,7 @@ public class CoralManipulator extends SubsystemBase {
     // m_wristConfig.encoder.positionConversionFactor(1 / 125);
 
     m_wristConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-    m_wristConfig.closedLoop.pid(.1, 0, 0);
+    m_wristConfig.closedLoop.pid(.065, 0.001, 0.1);
 
     m_wristConfig.closedLoop.maxMotion.maxAcceleration(CoralManipulatorConstants.kMaxAcceleration);
     m_wristConfig.closedLoop.maxMotion.maxVelocity(CoralManipulatorConstants.kMaxVelocity);

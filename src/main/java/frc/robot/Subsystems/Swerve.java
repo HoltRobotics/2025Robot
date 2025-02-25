@@ -40,6 +40,8 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean m_hasAppliedOperatorPerspective = false;
 
+    public double slowDrive = 1;
+
     /* Swerve requests to apply during SysId characterization */
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
@@ -105,6 +107,14 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
             this
         )
     );
+
+    public double slowDriving(double slowDrive) {
+        return slowDrive;
+    }
+
+    public double regDriving(double slowDrive) {
+        return slowDrive;
+    }
 
     /* The SysId routine to test */
     private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
