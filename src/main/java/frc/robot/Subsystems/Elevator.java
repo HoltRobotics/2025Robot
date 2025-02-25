@@ -36,7 +36,7 @@ public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
   public Elevator() {
 
-    m_elevatorConfig.inverted(false);
+    m_elevatorConfig.inverted(true);
     m_elevatorConfig.idleMode(IdleMode.kBrake);
     
     m_elevatorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
@@ -51,6 +51,7 @@ public class Elevator extends SubsystemBase {
 
     m_elevator.configure(m_elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+    m_elevator.getEncoder().setPosition(0);
   }
 
   @Override

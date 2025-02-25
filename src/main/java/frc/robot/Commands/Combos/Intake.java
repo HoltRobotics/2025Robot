@@ -16,15 +16,14 @@ import frc.robot.Subsystems.Elevator;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Intake extends ParallelCommandGroup {
-  Elevator m_elevator;
-  CoralManipulator m_Manipulator;
+Elevator m_elevator;
+CoralManipulator m_manipulator;
+
   /** Creates a new Intake. */
   public Intake(Elevator elevator, CoralManipulator manipulator) {
     m_elevator = elevator;
-    m_Manipulator = manipulator;
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands( new SetHeight(ElevatorConstants.kIntake, elevator));
+    m_manipulator = manipulator;
     addCommands(new SetWrist(CoralManipulatorConstants.kIntakeAngle, manipulator));
+    addCommands(new SetHeight(ElevatorConstants.kIntake, elevator));
   }
 }

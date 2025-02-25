@@ -14,12 +14,12 @@ public class Constants {
     public class ElevatorConstants {
         public static int kElevatorID = 15;
 
-        public static final double kP = 0.01;
+        public static final double kP = 0.02;
         public static final double kI = 0;
         public static final double kD = 0;
         public static final double kMaxVelocity = 100;
         public static final double kMaxAcceleration = 100;
-        public static final double kMaxError = 1;
+        public static final double kMaxError = 0.5;
 
         public static final double kConvertionFactor = (( 16 / 1 ) / 6 + (3 / 4));
         public static final double kStageFour = 180;
@@ -42,14 +42,14 @@ public class Constants {
         public static final int kWristMotorID = 16;
         public static final int kIntakeMotorID = 17;
 
-        public static final double kStowAngle = 5; // TO-DO: Tune this
-        public static final double kStage1Angle = 10; // TO-DO: Tune this
-        public static final double kStage2Angle = -29;
-        public static final double kStage3Angle = -28;
-        public static final double kStage4Angle = -29;
+        public static final double kStowAngle = 4; // TO-DO: Tune this
+        public static final double kStage1Angle = 19; // TO-DO: Tune this
+        public static final double kStage2Angle = -38;
+        public static final double kStage3Angle = -37;
+        public static final double kStage4Angle = -40;
         public static final double kMaxAngle = 14.75;
         public static final double kMinAngle = 0;
-        public static final double kIntakeAngle = -14;
+        public static final double kIntakeAngle = -19.69;
         public static final double kMaxVelocity = 1000;
         public static final double kMaxAcceleration = 1000;
         public static final double kMaxAllowedError = 0.01;

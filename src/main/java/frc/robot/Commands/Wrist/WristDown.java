@@ -5,7 +5,6 @@
 package frc.robot.Commands.Wrist;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.CoralManipulatorConstants;
 import frc.robot.Subsystems.CoralManipulator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
