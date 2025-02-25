@@ -54,10 +54,12 @@ public class CoralManipulator extends SubsystemBase {
     m_wristConfig.inverted(true);
     m_wristConfig.idleMode(IdleMode.kBrake);
 
+    m_wrist.getEncoder().setPosition(0);
+    m_wristConfig.encoder.positionConversionFactor(CoralManipulatorConstants.kConvertionFactor);
+
     m_shooter.configure(m_shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     m_wrist.configure(m_wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    m_wrist.getEncoder().setPosition(0);
   }
 
   @Override

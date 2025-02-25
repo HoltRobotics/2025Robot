@@ -32,6 +32,8 @@ public class MoveUp extends Command {
     @Override
     public void end(boolean interrupted) {
         m_elevator.ElevatorStop();
+        m_elevator.setheight(m_elevator.getPosition()); 
+        m_elevator.EnablePID();
     }
 
     // Returns true when the command should end.

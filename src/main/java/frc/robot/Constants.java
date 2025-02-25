@@ -34,7 +34,8 @@ public class Constants {
     }
 
     public class ClimberConstants {
-        public static final int kClimberMotorID = 0;
+        public static final int kClimberMotorOneID = 14;
+        public static final int kClimberMotorTwoID = 18;
     }
 
     public class CoralManipulatorConstants {
@@ -52,6 +53,7 @@ public class Constants {
         public static final double kMaxVelocity = 1000;
         public static final double kMaxAcceleration = 1000;
         public static final double kMaxAllowedError = 0.01;
+        public static final double kConvertionFactor = (360/(125/1));
     }
 
     public class ArmConstants{
@@ -90,5 +92,10 @@ public class Constants {
 
 
 
+    }
+
+    public class LEDConstants{
+
+        public static final int kBlinkInPort = 103;
     }
 }
