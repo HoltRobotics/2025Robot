@@ -126,4 +126,8 @@ public void setAngle (double angle) {
   System.out.println("Method in subsystem is seeing this" + angle);
   System.out.println("Setpoint: " + m_artSetPoint);
 }
+
+public void resetWrist() {
+  m_wrist.getEncoder().setPosition(0);
+}
 }
