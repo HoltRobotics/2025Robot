@@ -2,10 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
+
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -15,6 +16,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 
 public class Elevator extends SubsystemBase {
 
@@ -24,7 +26,8 @@ public class Elevator extends SubsystemBase {
 
   SparkClosedLoopController m_elevatorPID = m_elevator.getClosedLoopController();
 
-  double m_setPoint = 0;
+  // double m_setPoint = 0;
+  double m_setPoint;
 
   double m_position = m_elevator.getEncoder().getPosition();
 
@@ -33,7 +36,7 @@ public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
   public Elevator() {
 
-    m_elevatorConfig.inverted(false);
+    m_elevatorConfig.inverted(true);
     m_elevatorConfig.idleMode(IdleMode.kBrake);
     
     m_elevatorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
@@ -42,24 +45,30 @@ public class Elevator extends SubsystemBase {
     m_elevatorConfig.closedLoop.maxMotion.maxAcceleration(ElevatorConstants.kMaxAcceleration);
     m_elevatorConfig.closedLoop.maxMotion.maxVelocity(ElevatorConstants.kMaxVelocity);
     m_elevatorConfig.closedLoop.maxMotion.allowedClosedLoopError(ElevatorConstants.kMaxError);
+    m_elevatorConfig.closedLoop.maxMotion.positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal);
 
     m_elevatorConfig.encoder.positionConversionFactor(ElevatorConstants.kConvertionFactor);
 
     m_elevator.configure(m_elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+    m_elevator.getEncoder().setPosition(0);
   }
 
   @Override
   public void periodic() {
     if (m_isEnabled) {
-      m_elevatorPID.setReference(m_setPoint, ControlType.kMAXMotionPositionControl);
+      m_elevatorPID.setReference(m_setPoint, ControlType.kPosition);
     }
     m_position = m_elevator.getEncoder().getPosition();
-    // This method will be called once per scheduler run
+    // // This method will be called once per scheduler run
+    // // System.out.println("set point " + m_setPoint);
+     System.out.println("Elevator position " + m_position);
   }
 
   public void setheight(double height) {
-    m_elevatorPID.setReference(m_setPoint, ControlType.kMAXMotionPositionControl);
+    m_setPoint = height;
+    m_elevatorPID.setReference(height, ControlType.kMAXMotionPositionControl);
+    System.out.println("function seen, " + height);
   }
 
   public void MoveUp() {

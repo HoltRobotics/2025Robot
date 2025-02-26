@@ -5,7 +5,7 @@
 package frc.robot.Commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Arm;
+import frc.robot.Subsystems.Arm;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -24,5 +24,6 @@ public class SetAngle extends InstantCommand {
   public void initialize() {
     m_arm.setInMotion(true);
     m_arm.setAngle(m_angle);
+    m_arm.armAngle(m_angle);
   }
 }
