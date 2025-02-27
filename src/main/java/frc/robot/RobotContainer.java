@@ -63,7 +63,7 @@ public class RobotContainer {
 
     // Shuffleboard and PathPlanner
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
-    private final SendableChooser<Command> m_autoChooser;
+    // private final SendableChooser<Command> m_autoChooser;
     // Controllers
     private final PS5Controller m_driver = new PS5Controller(Constants.OIConstants.kDriverPort);
     private final Joystick m_operator = new Joystick(Constants.OIConstants.kOperatorPort);
@@ -82,16 +82,16 @@ public class RobotContainer {
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
   public RobotContainer() {
-    m_autoChooser = AutoBuilder.buildAutoChooser();
-    m_tab.add("Autochooser", m_autoChooser);
+    // m_autoChooser = AutoBuilder.buildAutoChooser();
+    // m_tab.add("Autochooser", m_autoChooser);
 
     /* PathPlanner Commands */
-    NamedCommands.registerCommand("Level 2", new LevelTwo(m_manipulator, m_elevator));
-    NamedCommands.registerCommand("Level 3", new LevelThree(m_elevator, m_manipulator));
-    NamedCommands.registerCommand("Level 4", new LevelFour(m_elevator, m_manipulator));
-    NamedCommands.registerCommand("Shoot", new shoot(m_manipulator));
-    NamedCommands.registerCommand("Intake", new Intake(m_elevator, m_manipulator));
-    NamedCommands.registerCommand("Stow", new Stow(m_elevator, m_manipulator));
+    // NamedCommands.registerCommand("Level 2", new LevelTwo(m_manipulator, m_elevator));
+    // NamedCommands.registerCommand("Level 3", new LevelThree(m_elevator, m_manipulator));
+    // NamedCommands.registerCommand("Level 4", new LevelFour(m_elevator, m_manipulator));
+    // NamedCommands.registerCommand("Shoot", new shoot(m_manipulator));
+    // NamedCommands.registerCommand("Intake", new Intake(m_elevator, m_manipulator));
+    // NamedCommands.registerCommand("Stow", new Stow(m_elevator, m_manipulator));
 
     configureButtonBindings();
     configureSwerveBindings();
@@ -165,6 +165,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return m_autoChooser.getSelected();
+    // return m_autoChooser.getSelected();
+    return Commands.print("No Autonomous Command Configured");
   }
 }

@@ -45,7 +45,7 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
     private boolean m_hasAppliedOperatorPerspective = false;
 
     /* Swerve request to apply during robot-centric path-following */
-    private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
+    // private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
 
     public double slowDrive = 1;
 
@@ -191,7 +191,7 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
      * @param modules                   Constants for each specific module
      */
 
-    private void configureAutoBuilder() {
+    /* private void configureAutoBuilder() {
         try {
             var config = RobotConfig.fromGUISettings();
             AutoBuilder.configure(
@@ -213,7 +213,7 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
         } catch (Exception ex) {
             DriverStation.reportError("Failed to load PathPlanner config and configure ", ex.getStackTrace());    
         }
-    }
+    } */
     
     public Swerve(
         SwerveDrivetrainConstants drivetrainConstants,
@@ -226,7 +226,7 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
         if (Utils.isSimulation()) {
             startSimThread();
         }
-        configureAutoBuilder();
+        // configureAutoBuilder();
     }
 
     /**
