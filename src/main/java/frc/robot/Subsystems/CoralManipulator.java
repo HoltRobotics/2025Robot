@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralManipulatorConstants;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -77,6 +78,7 @@ public class CoralManipulator extends SubsystemBase {
     // if (m_isEnabled = true) {
     //   m_wrist.getClosedLoopController().setReference(m_wrist.getEncoder().getPosition(), ControlType.kMAXMotionPositionControl);
     // }
+    SmartDashboard.putBoolean("Intake Running", m_intakeRunning);
   }
 
 

@@ -6,6 +6,7 @@ package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -61,7 +62,8 @@ public class Elevator extends SubsystemBase {
       m_elevatorPID.setReference(m_setPoint, ControlType.kPosition);
     }
     m_position = m_elevator.getEncoder().getPosition();
-    // m_tab.add("Height", m_setPoint);
+    // m_tab.add("Height of Elevator", m_setPoint);
+    SmartDashboard.putNumber("Elevator Height", m_position);
     // This method will be called once per scheduler run
     // System.out.println("Elevator position " + m_position);
   }
