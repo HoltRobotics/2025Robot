@@ -42,4 +42,19 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  public void out() {
+    m_ClimberMotorOne.set(0.3);
+    m_ClimberMotorTwo.set(0.3);
+  }
+
+  public void in() {
+    m_ClimberMotorOne.set(-0.3);
+    m_ClimberMotorTwo.set(-0.3);
+  }
+
+  public void stop() {
+    m_ClimberMotorOne.set(0);
+    m_ClimberMotorTwo.set(0);
+  }
 }

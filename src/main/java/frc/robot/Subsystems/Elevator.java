@@ -4,6 +4,8 @@
 
 package frc.robot.Subsystems;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -26,11 +28,10 @@ public class Elevator extends SubsystemBase {
 
   SparkClosedLoopController m_elevatorPID = m_elevator.getClosedLoopController();
 
-  // double m_setPoint = 0;
+  ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
+
   double m_setPoint;
-
   double m_position = m_elevator.getEncoder().getPosition();
-
   boolean m_isEnabled = false;
 
   /** Creates a new Elevator. */
@@ -60,8 +61,8 @@ public class Elevator extends SubsystemBase {
       m_elevatorPID.setReference(m_setPoint, ControlType.kPosition);
     }
     m_position = m_elevator.getEncoder().getPosition();
+    // m_tab.add("Height", m_setPoint);
     // This method will be called once per scheduler run
-    // System.out.println("set point " + m_setPoint);
     // System.out.println("Elevator position " + m_position);
   }
 

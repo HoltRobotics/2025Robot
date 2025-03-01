@@ -11,6 +11,9 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralManipulatorConstants;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -31,8 +34,11 @@ public class CoralManipulator extends SubsystemBase {
   double m_wristPosition = m_wrist.getEncoder().getPosition();
   double m_artSetPoint = 0;
   boolean m_isEnabled = true;
+  boolean m_intakeRunning = false;
 
   SparkClosedLoopController m_wristPid = m_wrist.getClosedLoopController();
+
+  private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
 
   /** Creates a new shooter. */
   public CoralManipulator() {
@@ -63,6 +69,8 @@ public class CoralManipulator extends SubsystemBase {
   @Override
   public void periodic() {
     m_wristPosition = m_wrist.getEncoder().getPosition();
+    // m_tab.addBoolean("Intake Running", () -> m_intakeRunning);
+    // m_tab.add("Wrist Position", m_artSetPoint);
     // System.out.println("Wrist angle " + m_wristPosition);
     // m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
     // This method will be called once per scheduler run
@@ -74,11 +82,13 @@ public class CoralManipulator extends SubsystemBase {
 
   public void shooterintake() {
     m_shooter.set(-.3);
+    m_intakeRunning = true;
     //set angle
   }
 
 public void shootStop() {
   m_shooter.stopMotor();
+  m_intakeRunning = false;
 }
 
   public void shoot() {
