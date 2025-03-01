@@ -23,7 +23,7 @@ public class LevelTwo extends ParallelCommandGroup {
   public LevelTwo(CoralManipulator manipulator, Elevator elevator) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    System.out.println("Getting through command group");
+    // System.out.println("Getting through command group");
     addCommands(new SetWrist(CoralManipulatorConstants.kStage2Angle, manipulator));
     addCommands(new SetHeight(ElevatorConstants.kStageTwo, elevator));
   }

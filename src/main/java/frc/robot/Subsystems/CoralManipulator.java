@@ -64,8 +64,7 @@ public class CoralManipulator extends SubsystemBase {
   public void periodic() {
     m_wristPosition = m_wrist.getEncoder().getPosition();
     // System.out.println("Wrist angle " + m_wristPosition);
-    System.out.println("angle" + m_wristPosition);
-    //m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
+    // m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
     // This method will be called once per scheduler run
     // if (m_isEnabled = true) {
     //   m_wrist.getClosedLoopController().setReference(m_wrist.getEncoder().getPosition(), ControlType.kMAXMotionPositionControl);

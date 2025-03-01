@@ -46,6 +46,7 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
 
     /* Swerve request to apply during robot-centric path-following */
     private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
+    private RobotConfig config;
 
     public double slowDrive = 1;
 
@@ -144,6 +145,8 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
         if (Utils.isSimulation()) {
             startSimThread();
         }
+
+        configureAutoBuilder();
     }
 
     /**
@@ -226,7 +229,6 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
         if (Utils.isSimulation()) {
             startSimThread();
         }
-        configureAutoBuilder();
     }
 
     /**

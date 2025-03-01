@@ -16,6 +16,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.CommandUtil;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS5Controller;
@@ -61,9 +62,6 @@ public class RobotContainer {
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
     private double slowDrive = 1.0;
 
-    // Shuffleboard and PathPlanner
-    private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
-    private final SendableChooser<Command> m_autoChooser;
     // Controllers
     private final PS5Controller m_driver = new PS5Controller(Constants.OIConstants.kDriverPort);
     private final Joystick m_operator = new Joystick(Constants.OIConstants.kOperatorPort);
@@ -80,11 +78,12 @@ public class RobotContainer {
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    
+    // Shuffleboard and PathPlanner
+    private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
+    private final SendableChooser<Command> m_autoChooser;
 
   public RobotContainer() {
-    m_autoChooser = AutoBuilder.buildAutoChooser();
-    m_tab.add("Autochooser", m_autoChooser);
-
     /* PathPlanner Commands */
     NamedCommands.registerCommand("Level 2", new LevelTwo(m_manipulator, m_elevator));
     NamedCommands.registerCommand("Level 3", new LevelThree(m_elevator, m_manipulator));
@@ -97,6 +96,9 @@ public class RobotContainer {
     configureSwerveBindings();
 
     m_swerve.registerTelemetry(logger::telemeterize);
+
+    m_autoChooser = AutoBuilder.buildAutoChooser();
+    m_tab.add("Autochooser", m_autoChooser);
   }
 
   private void configureButtonBindings() {
@@ -166,5 +168,6 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return m_autoChooser.getSelected();
+    // return new PathPlannerAuto("Middle");
   }
 }
