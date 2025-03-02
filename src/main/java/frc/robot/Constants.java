@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /** Add your docs here. */
 public class Constants {
     public class OIConstants {
@@ -97,5 +99,12 @@ public class Constants {
     public class LEDConstants{
 
         public static final int kBlinkInPort = 103;
+    }
+
+    public static final class LimelightConstants {
+
+    public static double kGoalHeightMeters = Units.inchesToMeters(57.88);
+    public static double kLimelightLensHeightMeters = 0.2;
+    public static double kMountAngleRadians = Units.degreesToRadians(0);
     }
 }
