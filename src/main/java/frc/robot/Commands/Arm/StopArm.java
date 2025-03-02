@@ -10,20 +10,18 @@ import frc.robot.Subsystems.Arm;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SetAngle extends InstantCommand {
-  private double m_angle;
-  private Arm m_arm;
-  public SetAngle(double angle, Arm arm) {
-    m_angle = angle;
-    m_arm = arm;
+public class StopArm extends InstantCommand {
+  private final Arm m_arm;
+  
+  public StopArm(Arm arm) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_arm = arm;
+    addRequirements(m_arm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_arm.setInMotion(true);
-    m_arm.setAngle(m_angle);
-    m_arm.armAngle(m_angle);
+    m_arm.stopArm();
   }
 }

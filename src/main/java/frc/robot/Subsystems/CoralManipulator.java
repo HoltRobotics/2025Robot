@@ -2,108 +2,143 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.Subsystems;
 
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CoralManipulatorConstants;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class CoralManipulator extends SubsystemBase {
 
 
   /*leave comments to what these do */
-  SparkMax m_shooter = new SparkMax(20, MotorType.kBrushless);
-  SparkMax m_articulation = new SparkMax(21, MotorType.kBrushless);
+  SparkMax m_shooter = new SparkMax(CoralManipulatorConstants.kIntakeMotorID, MotorType.kBrushless);
+  SparkMax m_wrist = new SparkMax(CoralManipulatorConstants.kWristMotorID, MotorType.kBrushless);
 
   SparkMaxConfig m_shooterConfig = new SparkMaxConfig();
-  SparkMaxConfig m_articulationConfig = new SparkMaxConfig();
+  SparkMaxConfig m_wristConfig = new SparkMaxConfig();
 
-  double m_artPosition = m_articulation.getEncoder().getPosition();
+  double m_wristPosition = m_wrist.getEncoder().getPosition();
   double m_artSetPoint = 0;
+  boolean m_isEnabled = true;
+  boolean m_intakeRunning = false;
 
-  SparkClosedLoopController m_artPid = m_articulation.getClosedLoopController();
+  SparkClosedLoopController m_wristPid = m_wrist.getClosedLoopController();
+
+  private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
 
   /** Creates a new shooter. */
   public CoralManipulator() {
-    m_articulationConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-    m_articulationConfig.closedLoop.pid(.001, 0, 0);
+    // m_wristConfig.encoder.positionConversionFactor(1 / 125);
 
-  m_shooterConfig.inverted(false);
-  m_shooterConfig.idleMode(IdleMode.kBrake);
+    m_wristConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+    m_wristConfig.closedLoop.pid(.065, 0.001, 0.1);
 
-  m_articulationConfig.inverted(false);
-  m_articulationConfig.idleMode(IdleMode.kBrake);
+    m_wristConfig.closedLoop.maxMotion.maxAcceleration(CoralManipulatorConstants.kMaxAcceleration);
+    m_wristConfig.closedLoop.maxMotion.maxVelocity(CoralManipulatorConstants.kMaxVelocity);
+    m_wristConfig.closedLoop.maxMotion.allowedClosedLoopError(CoralManipulatorConstants.kMaxAllowedError);
+    m_wristConfig.closedLoop.maxMotion.positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal);
 
-  m_shooter.configure(m_shooterConfig, null, null);
-  m_articulation.configure(m_articulationConfig, null, null);
+    m_shooterConfig.inverted(false);
+    m_shooterConfig.idleMode(IdleMode.kBrake);
+
+    m_wristConfig.inverted(true);
+    m_wristConfig.idleMode(IdleMode.kBrake);
+
+    m_wrist.getEncoder().setPosition(0);
+    m_wristConfig.encoder.positionConversionFactor(CoralManipulatorConstants.kConvertionFactor);
+
+    m_shooter.configure(m_shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_wrist.configure(m_wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
   }
 
   @Override
   public void periodic() {
-    //m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
+    m_wristPosition = m_wrist.getEncoder().getPosition();
+    // m_tab.addBoolean("Intake Running", () -> m_intakeRunning);
+    // m_tab.add("Wrist Position", m_artSetPoint);
+    // System.out.println("Wrist angle " + m_wristPosition);
+    // m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
     // This method will be called once per scheduler run
+    // if (m_isEnabled = true) {
+    //   m_wrist.getClosedLoopController().setReference(m_wrist.getEncoder().getPosition(), ControlType.kMAXMotionPositionControl);
+    // }
+    SmartDashboard.putBoolean("Intake Running", m_intakeRunning);
   }
 
 
   public void shooterintake() {
     m_shooter.set(-.3);
+    m_intakeRunning = true;
     //set angle
   }
 
 public void shootStop() {
   m_shooter.stopMotor();
-
+  m_intakeRunning = false;
 }
 
-  public void shootL1() {
+  public void shoot() {
     m_shooter.set(1);
     //set angle
   }
 
-  public void shootL2() {
-    m_shooter.set(1);
-    //set angle
-  }
 
-  public void shootL3 () {
-    m_shooter.set(1);
-    //set angle
-  }
-
-  public void shootL4 () {
-    m_shooter.set(1);
-  
-  }
  public void setsetpoint (double newsetpoint) {
 m_artSetPoint = newsetpoint;
  }
 
 public double getPosition () {
-  return m_artPosition;
+  return m_wristPosition;
 }
 
 public double getsetpoint () {
   return m_artSetPoint;
 }
 
-public void elbowUp () {
-  m_articulation.set(.1);
+public void wristUp () {
+  m_wrist.set(.2);
 }
 
-public void elbowDown () {
-  m_articulation.set(-.1);
+public void wristDown () {
+  m_wrist.set(-.2);
+  System.out.println("Method sees this");
 }
 
-public void elbowStop () {
-  m_articulation.stopMotor();
+public void wristStop () {
+  m_wrist.stopMotor();
+}
+
+public void enablePID() {
+  m_isEnabled = true;
+}
+
+public void disablePID() {
+  m_isEnabled = false;
 }
 public void setAngle (double angle) {
-  m_artPid.setReference(angle, ControlType.kPosition);
+  m_artSetPoint = angle;
+  m_wristPid.setReference(angle, ControlType.kMAXMotionPositionControl);
+  System.out.println("Method in subsystem is seeing this" + angle);
+  System.out.println("Setpoint: " + m_artSetPoint);
+}
+
+public void resetWrist() {
+  m_wrist.getEncoder().setPosition(0);
 }
 }

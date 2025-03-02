@@ -2,28 +2,26 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Commands.Arm;
+package frc.robot.Commands.Wrist;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Subsystems.Arm;
+import frc.robot.Subsystems.CoralManipulator;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SetAngle extends InstantCommand {
-  private double m_angle;
-  private Arm m_arm;
-  public SetAngle(double angle, Arm arm) {
-    m_angle = angle;
-    m_arm = arm;
+public class WristStop extends InstantCommand {
+  private final CoralManipulator m_manipulator;
+
+  public WristStop(CoralManipulator manipulator) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_manipulator = manipulator;
+    addRequirements(manipulator);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_arm.setInMotion(true);
-    m_arm.setAngle(m_angle);
-    m_arm.armAngle(m_angle);
+    m_manipulator.wristStop();
   }
 }
