@@ -6,9 +6,9 @@ package frc.robot.Commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.subsystems.Arm;
+import frc.robot.Subsystems.Arm;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+/* Manually moves the arm down */
 public class DownArm extends Command {
   private final Arm m_arm;
   private boolean m_pastLimit = false;
@@ -34,10 +34,11 @@ public class DownArm extends Command {
   @Override
   public void end(boolean interrupted) {
     if (m_pastLimit){
-      m_arm.setAngle(0);
+      m_arm.setAngle(ArmConstants.kMaxAngle);
     } else {
       m_arm.setAngle(m_arm.getAngle());
     }
+    m_arm.stopArm();
   }
 
   // Returns true when the command should end.

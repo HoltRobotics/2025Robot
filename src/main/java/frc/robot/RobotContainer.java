@@ -5,6 +5,7 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Newton;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
@@ -16,8 +17,11 @@ import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.Swerve;
 import frc.robot.Telemetry;
+import frc.robot.Commands.Arm.DownArm;
+import frc.robot.Commands.Arm.UpArm;
+import frc.robot.Subsystems.Arm;
+import frc.robot.Subsystems.Swerve;
 
 public class RobotContainer {
     // Setting up max speeds for driving and turning
@@ -31,6 +35,7 @@ public class RobotContainer {
     // Subsystems
     public final Swerve m_swerve = TunerConstants.createDrivetrain();
     public final Telemetry logger = new Telemetry(MaxSpeed);
+    public final Arm m_arm = new Arm(); 
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -46,7 +51,9 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    
+    // In case this doesn't work, please e-stop
+    new JoystickButton(m_operator, 1).whileTrue(new UpArm(m_arm));
+    new JoystickButton(m_operator, 2).whileTrue(new DownArm(m_arm));
   }
 
   private void configureSwerveBindings() {
