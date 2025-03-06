@@ -7,20 +7,19 @@ package frc.robot.Commands.Arm;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Subsystems.Arm;
 
-/**Automatically moves the arm to the angle of your desire */
-public class SetAngle extends InstantCommand {
-  private double m_angle;
-  private Arm m_arm;
-  public SetAngle(double angle, Arm arm) {
-    m_angle = angle;
-    m_arm = arm;
+/**Manual Stop Arm command */
+public class StopArm extends InstantCommand {
+  private final Arm m_arm;
+  
+  public StopArm(Arm arm) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_arm = arm;
+    addRequirements(m_arm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_arm.setInMotion(true);
-    m_arm.setAngle(m_angle);
+    m_arm.stopArm();
   }
 }

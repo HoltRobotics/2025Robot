@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Telemetry;
-import frc.robot.commands.Arm.DownArm;
-import frc.robot.commands.Arm.UpArm;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Swerve;
+import frc.robot.Commands.Arm.DownArm;
+import frc.robot.Commands.Arm.UpArm;
+import frc.robot.Subsystems.Arm;
+import frc.robot.Subsystems.Swerve;
 
 public class RobotContainer {
     // Setting up max speeds for driving and turning

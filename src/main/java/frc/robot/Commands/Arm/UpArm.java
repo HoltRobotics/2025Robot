@@ -2,12 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Arm;
+package frc.robot.Commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Arm;
+import frc.robot.Subsystems.Arm;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+/**Manually moves the arm up*/
 public class UpArm extends Command {
   private final Arm m_arm;
   private boolean m_pastLimit = false;
@@ -37,7 +37,7 @@ public class UpArm extends Command {
     } else {
       m_arm.setAngle(m_arm.getAngle());
     }
-    m_arm.stop();
+    m_arm.stopArm();
   }
 
   // Returns true when the command should end.

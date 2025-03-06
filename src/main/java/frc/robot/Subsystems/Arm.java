@@ -2,30 +2,41 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.Subsystems;
 
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
   private final SparkMax m_armMotor = new SparkMax(ArmConstants.armMotorId, MotorType.kBrushless);
+  private final SparkMax m_followingMotor = new SparkMax(ArmConstants.followingMotorId, MotorType.kBrushless);
+
   private final RelativeEncoder m_encoder;
+  private final RelativeEncoder m_followingEncoder;
+  
   SparkMaxConfig m_armConfig = new SparkMaxConfig();
+  SparkMaxConfig m_followerConfig = new SparkMaxConfig();
 
 
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
   private final GenericEntry m_angleDisplay;
+
+  private final SparkClosedLoopController m_climberPid = m_armMotor.getClosedLoopController();
+  private final SparkClosedLoopController m_followingClimberPID = m_followingMotor.getClosedLoopController();
 
   public boolean m_inMotion = false;
   private double m_setPoint = 0;
@@ -33,11 +44,32 @@ public class Arm extends SubsystemBase {
   /** Creates a new Arm. */
   public Arm() {
     m_encoder = m_armMotor.getEncoder();
-    m_encoder.setPosition(0);
-    m_armConfig.inverted(true);
+    m_followingEncoder = m_followingMotor.getEncoder();
+
+    m_armConfig.encoder
+    .positionConversionFactor(1/125);
+
+    m_armConfig.closedLoop
+    .pid(0.100, 0, 0)
+    .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+    
+    m_followerConfig
+    .follow(m_armMotor, true);
+
+    m_followerConfig.encoder
+    .positionConversionFactor(1/125);
+
+    m_followerConfig.closedLoop
+    .pid(0.1, 0, 0)
+    .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+
+    m_followingMotor.configure(m_followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_armMotor.configure(m_armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
     m_angleDisplay = m_tab.add("Arm Angle", getAngle()).getEntry();
 
-    m_armMotor.configure(m_armConfig, null, null);
+    m_encoder.setPosition(0);
+    m_followingEncoder.setPosition(0);
   }
 
   public void useOutput(double output, TrapezoidProfile.State setpoint) {
@@ -70,14 +102,16 @@ public class Arm extends SubsystemBase {
    * Method for forcing the arm to move up.
    */
   public void up() {
-    m_armMotor.set(-0.75); // Sets the speed of the motor to -3/4.
+    m_armMotor.set(-0.4);
+    m_followingMotor.set(-0.4); // Sets the speed of the motor to -1/4.
   }
 
   /**
    * Method for forcing the arm to move down.
    */
   public void down() {
-    m_armMotor.set(0.75); // Sets the speed of the motor to 3/4.
+    m_armMotor.set(0.4); // Sets the speed of the motor to 1/4.
+    m_followingMotor.set(0.4);
   }
 
   public boolean getInMotion() {
@@ -91,10 +125,7 @@ public class Arm extends SubsystemBase {
 
   public void setSpeed(double speed) {
     m_armMotor.set(speed);
-  }
-
-  public void stop(){
-    m_armMotor.set(0);
+    m_followingMotor.set(speed);
   }
 
   @Override
@@ -110,5 +141,18 @@ public class Arm extends SubsystemBase {
     if(getAngle() > m_setPoint - 0.1 && getAngle() < m_setPoint + 0.1) {
       m_inMotion = false;
     }
+
+    m_climberPid.setReference(m_setPoint, ControlType.kPosition);
+    m_followingClimberPID.setReference(m_setPoint, ControlType.kPosition);
+  }
+
+  public void stopArm(){
+    m_armMotor.set(0);
+    m_followingMotor.set(0);
+  }
+
+  public void armAngle(double angle){
+    m_climberPid.setReference(angle, ControlType.kPosition);
+    m_followingClimberPID.setReference(angle, ControlType.kPosition);
   }
 }
