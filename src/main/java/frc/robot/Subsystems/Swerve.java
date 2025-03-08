@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -13,6 +14,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -22,10 +24,14 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.TunerConstants;
 import frc.robot.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -37,6 +43,11 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
 
+    TalonFX m_frontRightDrive = new TalonFX(TunerConstants.FrontRight.DriveMotorId);
+    TalonFX m_frontLeftDrive = new TalonFX(TunerConstants.FrontLeft.DriveMotorId);
+    TalonFX m_backRightDrive = new TalonFX(TunerConstants.BackRight.DriveMotorId);
+    TalonFX m_backLeftDrive = new TalonFX(TunerConstants.BackLeft.DriveMotorId);
+
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
     /* Red alliance sees forward as 180 degrees (toward blue alliance wall) */
@@ -45,9 +56,12 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
     private boolean m_hasAppliedOperatorPerspective = false;
 
     /* Swerve request to apply during robot-centric path-following */
-    // private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
+    private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
+    private RobotConfig config;
 
-    public double slowDrive = 1;
+    public double slowDrive = 0.3;
+
+    public double regDriving = 1;
 
     /* Swerve requests to apply during SysId characterization */
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
@@ -119,8 +133,8 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
         return slowDrive;
     }
 
-    public double regDriving(double slowDrive) {
-        return slowDrive;
+    public double regDriving(double regDriving) {
+        return regDriving;
     }
 
     /* The SysId routine to test */
@@ -144,6 +158,8 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
         if (Utils.isSimulation()) {
             startSimThread();
         }
+
+        configureAutoBuilder();
     }
 
     /**
@@ -191,7 +207,7 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
      * @param modules                   Constants for each specific module
      */
 
-    /* private void configureAutoBuilder() {
+    private void configureAutoBuilder() {
         try {
             var config = RobotConfig.fromGUISettings();
             AutoBuilder.configure(
@@ -203,8 +219,8 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
                     .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
                 ), 
                 new PPHolonomicDriveController(
-                    new PIDConstants(10, 0, 0), 
-                    new PIDConstants(10, 0, 0)
+                    new PIDConstants(4, 0, 0), 
+                    new PIDConstants(0.5, 0, 0)
                 ), 
                 config, 
                 () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue, 
@@ -213,7 +229,7 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
         } catch (Exception ex) {
             DriverStation.reportError("Failed to load PathPlanner config and configure ", ex.getStackTrace());    
         }
-    } */
+    }
     
     public Swerve(
         SwerveDrivetrainConstants drivetrainConstants,
@@ -226,7 +242,6 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
         if (Utils.isSimulation()) {
             startSimThread();
         }
-        // configureAutoBuilder();
     }
 
     /**

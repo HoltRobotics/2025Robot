@@ -4,6 +4,9 @@
 
 package frc.robot.Subsystems;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -26,11 +29,10 @@ public class Elevator extends SubsystemBase {
 
   SparkClosedLoopController m_elevatorPID = m_elevator.getClosedLoopController();
 
-  // double m_setPoint = 0;
+  SmartDashboard m_dashboard;
+
   double m_setPoint;
-
   double m_position = m_elevator.getEncoder().getPosition();
-
   boolean m_isEnabled = false;
 
   /** Creates a new Elevator. */
@@ -60,9 +62,11 @@ public class Elevator extends SubsystemBase {
       m_elevatorPID.setReference(m_setPoint, ControlType.kPosition);
     }
     m_position = m_elevator.getEncoder().getPosition();
-    // // This method will be called once per scheduler run
-    // // System.out.println("set point " + m_setPoint);
-     System.out.println("Elevator position " + m_position);
+    SmartDashboard.putNumber("Elevator Goal Height", m_position);
+    SmartDashboard.putNumber("Elevator Actual Height", m_position);
+    // m_tab.add("Height", m_setPoint);
+    // This method will be called once per scheduler run
+  //  System.out.println("Elevator position " + m_position);
   }
 
   public void setheight(double height) {
@@ -72,11 +76,11 @@ public class Elevator extends SubsystemBase {
   }
 
   public void MoveUp() {
-    m_elevator.set(0.3);
+    m_elevator.set(1);
   }
 
   public void MoveDown() {
-    m_elevator.set(-0.3);
+    m_elevator.set(-0.8);
   }
 
   public void EnablePID() {

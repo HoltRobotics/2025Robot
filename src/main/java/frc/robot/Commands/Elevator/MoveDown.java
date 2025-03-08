@@ -40,6 +40,10 @@ public class MoveDown extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        if (m_elevator.getPosition() <= ElevatorConstants.kMinHeight) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

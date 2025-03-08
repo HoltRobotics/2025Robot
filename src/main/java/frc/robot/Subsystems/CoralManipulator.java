@@ -11,6 +11,10 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralManipulatorConstants;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -31,15 +35,20 @@ public class CoralManipulator extends SubsystemBase {
   double m_wristPosition = m_wrist.getEncoder().getPosition();
   double m_artSetPoint = 0;
   boolean m_isEnabled = true;
+  boolean m_intakeRunning = false;
 
   SparkClosedLoopController m_wristPid = m_wrist.getClosedLoopController();
+
+  private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
+
+  SmartDashboard m_dashboard;
 
   /** Creates a new shooter. */
   public CoralManipulator() {
     // m_wristConfig.encoder.positionConversionFactor(1 / 125);
 
     m_wristConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-    m_wristConfig.closedLoop.pid(.065, 0.001, 0.1);
+    m_wristConfig.closedLoop.pid(CoralManipulatorConstants.kP, CoralManipulatorConstants.kI, CoralManipulatorConstants.kD);
 
     m_wristConfig.closedLoop.maxMotion.maxAcceleration(CoralManipulatorConstants.kMaxAcceleration);
     m_wristConfig.closedLoop.maxMotion.maxVelocity(CoralManipulatorConstants.kMaxVelocity);
@@ -63,29 +72,39 @@ public class CoralManipulator extends SubsystemBase {
   @Override
   public void periodic() {
     m_wristPosition = m_wrist.getEncoder().getPosition();
+    // m_tab.addBoolean("Intake Running", () -> m_intakeRunning);
+    // m_tab.add("Wrist Angle", m_artSetPoint);
     // System.out.println("Wrist angle " + m_wristPosition);
-    System.out.println("angle" + m_wristPosition);
-    //m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
+    // m_artPid.setReference(m_artSetPoint, ControlType.kPosition);
     // This method will be called once per scheduler run
     // if (m_isEnabled = true) {
     //   m_wrist.getClosedLoopController().setReference(m_wrist.getEncoder().getPosition(), ControlType.kMAXMotionPositionControl);
     // }
-  }
+    SmartDashboard.putNumber("Wrist Angle Goal", m_artSetPoint);
+    SmartDashboard.putNumber("Wrist Angle Actual", m_wrist.getEncoder().getPosition());
+    SmartDashboard.putBoolean("Intake Running?", m_intakeRunning);
+    }
 
 
   public void shooterintake() {
     m_shooter.set(-.3);
+    m_intakeRunning = true;
     //set angle
   }
 
 public void shootStop() {
   m_shooter.stopMotor();
+  m_intakeRunning = false;
 }
 
   public void shoot() {
     m_shooter.set(1);
     //set angle
   }
+
+public void slowShoot() {
+  m_shooter.set(0.38);
+}
 
 
  public void setsetpoint (double newsetpoint) {

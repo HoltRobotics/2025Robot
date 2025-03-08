@@ -5,6 +5,8 @@
 package frc.robot.Commands.Combos;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.Elevator.SetHeight;
 import frc.robot.Commands.Wrist.SetWrist;
 import frc.robot.Constants.CoralManipulatorConstants;
@@ -23,8 +25,9 @@ public class LevelTwo extends ParallelCommandGroup {
   public LevelTwo(CoralManipulator manipulator, Elevator elevator) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    System.out.println("Getting through command group");
+    // System.out.println("Getting through command group");
     addCommands(new SetWrist(CoralManipulatorConstants.kStage2Angle, manipulator));
+    addCommands(new WaitCommand(1));
     addCommands(new SetHeight(ElevatorConstants.kStageTwo, elevator));
   }
 }
