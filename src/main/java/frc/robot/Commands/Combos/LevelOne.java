@@ -5,28 +5,26 @@
 package frc.robot.Commands.Combos;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Commands.CoralWrist.SetWrist;
 import frc.robot.Commands.Elevator.SetHeight;
-import frc.robot.Commands.Wrist.SetWrist;
 import frc.robot.Constants.CoralManipulatorConstants;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Subsystems.CoralManipulator;
 import frc.robot.Subsystems.Elevator;
+import frc.robot.Subsystems.Wrist;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LevelOne extends ParallelCommandGroup {
-  private final Elevator m_elevator;
-  private final CoralManipulator m_manipulator;
+  Wrist m_wrist;
+  Elevator m_elevator;
 
   /** Creates a new LevelOne. */
-  public LevelOne(Elevator elevator, CoralManipulator manipulator) {
+  public LevelOne(Wrist wrist, Elevator elevator) {
+    m_wrist = wrist;
     m_elevator = elevator;
-    m_manipulator = manipulator;
     // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new SetWrist(CoralManipulatorConstants.kStage1Angle, m_manipulator));
+    addCommands(new SetWrist(CoralManipulatorConstants.kStage1Angle, wrist));
     addCommands(new SetHeight(ElevatorConstants.kStageOne, elevator));
   }
 }

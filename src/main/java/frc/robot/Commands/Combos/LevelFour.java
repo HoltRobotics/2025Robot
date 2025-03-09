@@ -5,28 +5,27 @@
 package frc.robot.Commands.Combos;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Commands.CoralWrist.SetWrist;
 import frc.robot.Commands.Elevator.SetHeight;
-import frc.robot.Commands.Wrist.SetWrist;
 import frc.robot.Constants.CoralManipulatorConstants;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Subsystems.CoralManipulator;
 import frc.robot.Subsystems.Elevator;
+import frc.robot.Subsystems.Wrist;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LevelFour extends ParallelCommandGroup {
+  Wrist m_wrist;
   Elevator m_elevator;
-  CoralManipulator m_Manipulator;
+
   /** Creates a new LevelFour. */
-  public LevelFour(Elevator elevator, CoralManipulator manipulator) {
-    m_Manipulator = manipulator;
+  public LevelFour(Wrist wrist, Elevator elevator) {
+    m_wrist = wrist;
     m_elevator = elevator;
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-       addCommands(new SetWrist(CoralManipulatorConstants.kStage4Angle, manipulator));
+
+    addCommands(new SetWrist(CoralManipulatorConstants.kStage4Angle, wrist));
     addCommands(new WaitCommand(1.4));
     addCommands(new SetHeight(ElevatorConstants.kStageFour, elevator));
   }

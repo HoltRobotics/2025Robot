@@ -28,18 +28,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Telemetry;
-import frc.robot.Commands.RegDrive;
-import frc.robot.Commands.SlowDrive;
 import frc.robot.Commands.Climber.ClimberAngle;
 import frc.robot.Commands.Climber.ClimberIn;
 import frc.robot.Commands.Climber.ClimberOut;
 import frc.robot.Commands.Climber.EnableClimb;
 import frc.robot.Commands.Climber.ResetClimber;
-// import frc.robot.Commands.Arm.DownArm;
-// import frc.robot.Commands.Arm.SetAngle;
-// import frc.robot.Commands.Arm.StopArm;
-// import frc.robot.Commands.Arm.UpArm;
-import frc.robot.Commands.Combos.Intake;
+import frc.robot.Commands.Combos.IntakePosition;
 import frc.robot.Commands.Combos.LevelFour;
 import frc.robot.Commands.Combos.LevelOne;
 import frc.robot.Commands.Combos.LevelThree;
@@ -49,21 +43,22 @@ import frc.robot.Commands.Elevator.MoveDown;
 import frc.robot.Commands.Elevator.MoveUp;
 import frc.robot.Commands.Elevator.SetHeight;
 import frc.robot.Commands.Elevator.StopElevator;
-import frc.robot.Commands.Wrist.ResetWrist;
-import frc.robot.Commands.Wrist.SetWrist;
-import frc.robot.Commands.Wrist.SlowShoot;
-import frc.robot.Commands.Wrist.WristDown;
-import frc.robot.Commands.Wrist.WristStop;
-import frc.robot.Commands.Wrist.WristUp;
-import frc.robot.Commands.Wrist.intake;
-import frc.robot.Commands.Wrist.shoot;
+import frc.robot.Commands.Swerve.RegDrive;
+import frc.robot.Commands.Swerve.SlowDrive;
+import frc.robot.Commands.CoralIntake.Intake;
+import frc.robot.Commands.CoralIntake.Shoot;
+import frc.robot.Commands.CoralIntake.SlowShoot;
+import frc.robot.Commands.CoralWrist.ResetWrist;
+import frc.robot.Commands.CoralWrist.WristDown;
+import frc.robot.Commands.CoralWrist.WristStop;
+import frc.robot.Commands.CoralWrist.WristUp;
 import frc.robot.Constants.CoralManipulatorConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Subsystems.Climber;
-// import frc.robot.Subsystems.Arm;
-import frc.robot.Subsystems.CoralManipulator;
+import frc.robot.Subsystems.CoralIntake;
 import frc.robot.Subsystems.Elevator;
 import frc.robot.Subsystems.Swerve;
+import frc.robot.Subsystems.Wrist;
 
 @SuppressWarnings("unused")
 public class RobotContainer {
@@ -78,8 +73,8 @@ public class RobotContainer {
 
     // Subsystems
     public final Elevator m_elevator = new Elevator();
-    // public final Arm m_arm = new Arm();
-    public final CoralManipulator m_manipulator = new CoralManipulator();
+    public final Wrist m_wrist = new Wrist();
+    public final CoralIntake m_intake = new CoralIntake();
     public final Swerve m_swerve = TunerConstants.createDrivetrain();
     public final Climber m_climber = new Climber();
     public final Telemetry logger = new Telemetry(MaxSpeed);
@@ -96,15 +91,16 @@ public class RobotContainer {
 
   public RobotContainer() {
     /* PathPlanner Commands */
-    NamedCommands.registerCommand("Level 1", new LevelOne(m_elevator, m_manipulator));
-    NamedCommands.registerCommand("Level 2", new LevelTwo(m_manipulator, m_elevator));
-    NamedCommands.registerCommand("Level 3", new LevelThree(m_elevator, m_manipulator));
-    NamedCommands.registerCommand("Level 4", new LevelFour(m_elevator, m_manipulator));
-    NamedCommands.registerCommand("Shoot", new shoot(m_manipulator));
-    NamedCommands.registerCommand("Slow Shoot", new SlowShoot(m_manipulator));
-    NamedCommands.registerCommand("Intake", new Intake(m_elevator, m_manipulator));
-    NamedCommands.registerCommand("Stow", new Stow(m_elevator, m_manipulator));
-    NamedCommands.registerCommand("Coral Intake", new intake(m_manipulator));
+    NamedCommands.registerCommand("Level 1", new LevelOne(m_wrist, m_elevator));
+    NamedCommands.registerCommand("Level 2", new LevelTwo(m_wrist, m_elevator));
+    NamedCommands.registerCommand("Level 3", new LevelThree(m_wrist, m_elevator));
+    NamedCommands.registerCommand("Level 4", new LevelFour(m_wrist, m_elevator));
+    // NamedCommands.registerCommand("Shoot", new Shoot(m_intake));
+    NamedCommands.registerCommand("Shoot", new Shoot(m_intake));
+    NamedCommands.registerCommand("Slow Shoot", new SlowShoot(m_intake));
+    NamedCommands.registerCommand("Intake", new IntakePosition(m_wrist, m_elevator));
+    NamedCommands.registerCommand("Stow", new Stow(m_wrist, m_elevator));
+    NamedCommands.registerCommand("Intake", new Intake(m_intake));
 
     configureButtonBindings();
     configureSwerveBindings();
@@ -119,41 +115,36 @@ public class RobotContainer {
 
     // Elevator Commands
       // PID Height Commands
-    // new JoystickButton(m_operator, 6).onTrue(new SetHeight(ElevatorConstants.kStageOne, m_elevator));
-    // new JoystickButton(m_operator, 7).onTrue(new SetHeight(ElevatorConstants.kStageTwo, m_elevator));
-    // new JoystickButton(m_operator, 8).onTrue(new SetHeight(ElevatorConstants.kStageThree, m_elevator));
-    // new JoystickButton(m_operator, 9).onTrue(new SetHeight(ElevatorConstants.kStageFour, m_elevator));
-    // new JoystickButton(m_operator, 10).onTrue(new SetHeight(ElevatorConstants.kMinHeight, m_elevator));
+        // new JoystickButton(m_operator, 6).onTrue(new SetHeight(ElevatorConstants.kStageOne, m_elevator));
+        // new JoystickButton(m_operator, 7).onTrue(new SetHeight(ElevatorConstants.kStageTwo, m_elevator));
+        // new JoystickButton(m_operator, 8).onTrue(new SetHeight(ElevatorConstants.kStageThree, m_elevator));
+        // new JoystickButton(m_operator, 9).onTrue(new SetHeight(ElevatorConstants.kStageFour, m_elevator));
+        // new JoystickButton(m_operator, 10).onTrue(new SetHeight(ElevatorConstants.kMinHeight, m_elevator));
 
       // Manual Elevator Commands
-    new JoystickButton(m_operator, 11).whileTrue(new MoveUp(m_elevator));
-    new JoystickButton(m_operator, 12).whileTrue(new MoveDown(m_elevator));
-    new JoystickButton(m_operator, 22).onTrue(new StopElevator(m_elevator));
+      new JoystickButton(m_operator, 11).whileTrue(new MoveUp(m_elevator));
+      new JoystickButton(m_operator, 12).whileTrue(new MoveDown(m_elevator));
+      new JoystickButton(m_operator, 22).onTrue(new StopElevator(m_elevator));
+
+    // Intake Commands
+      new JoystickButton(m_operator, 16).whileTrue(new Intake(m_intake));
+      new JoystickButton(m_operator, 15).whileTrue(new Shoot(m_intake));
+      new JoystickButton(m_operator, 6).whileTrue(new SlowShoot(m_intake));
 
     // Wrist Commands
-      // PID Wrist Commands
-    // new JoystickButton(m_operator, 4).onTrue(new SetWrist(m_manipulator, CoralManipulatorConstants.kIntakeAngle));
-    // new JoystickButton(m_operator, 19).onTrue(new SetWrist(m_manipulator, CoralManipulatorConstants.kStowAngle));
-
       // Manual Wrist Commands
-    new JoystickButton(m_operator, 13).whileTrue(new WristUp(m_manipulator));
-    new JoystickButton(m_operator, 14).whileTrue(new WristDown(m_manipulator));
-    new JoystickButton(m_operator, 20).onTrue(new WristStop(m_manipulator));
-    new JoystickButton(m_operator, 15).whileTrue(new shoot(m_manipulator));
-    new JoystickButton(m_operator, 16).whileTrue(new intake(m_manipulator));
-    new JoystickButton(m_driver, PS5Controller.Button.kL1.value).whileTrue(new intake(m_manipulator));
-    new JoystickButton(m_driver, PS5Controller.Button.kCross.value).whileTrue(new shoot(m_manipulator));
-    new JoystickButton(m_operator, 6).whileTrue(new SlowShoot(m_manipulator));
-    new JoystickButton(m_operator, 24).onTrue(new ResetWrist(m_manipulator));
+      new JoystickButton(m_operator, 13).whileTrue(new WristUp(m_wrist));
+      new JoystickButton(m_operator, 14).whileTrue(new WristDown(m_wrist));
+      new JoystickButton(m_operator, 19).onTrue(new WristStop(m_wrist));
+      new JoystickButton(m_operator, 24).onTrue(new ResetWrist(m_wrist));
 
     // Combo Commands
-    new JoystickButton(m_operator, 4).onTrue(new LevelFour(m_elevator, m_manipulator));
-    new JoystickButton(m_operator, 2).onTrue(new LevelTwo(m_manipulator, m_elevator));
-    new JoystickButton(m_operator, 3).onTrue(new LevelThree(m_elevator, m_manipulator));
-    new JoystickButton(m_operator, 1).onTrue(new LevelOne(m_elevator, m_manipulator));
-    new JoystickButton(m_operator, 5).onTrue(new Intake(m_elevator, m_manipulator));
-    // new JoystickButton(m_operator, 21).onTrue(new SetAngle(5, m_arm));
-    new JoystickButton(m_operator, 10).onTrue(new Stow(m_elevator, m_manipulator));
+      new JoystickButton(m_operator, 10).onTrue(new Stow(m_wrist, m_elevator));
+      new JoystickButton(m_operator, 5).onTrue(new Intake(m_intake));
+      new JoystickButton(m_operator, 1).onTrue(new LevelOne(m_wrist, m_elevator));
+      new JoystickButton(m_operator, 2).onTrue(new LevelTwo(m_wrist, m_elevator));
+      new JoystickButton(m_operator, 3).onTrue(new LevelThree(m_wrist, m_elevator));
+      new JoystickButton(m_operator, 4).onTrue(new LevelFour(m_wrist, m_elevator));
 
     // Climber Commands
       // PID Climber Commands
@@ -178,18 +169,12 @@ public class RobotContainer {
     new JoystickButton(m_driver, PS5Controller.Button.kOptions.value).onTrue(m_swerve.runOnce(() -> m_swerve.seedFieldCentric()));
     new JoystickButton(m_driver, PS5Controller.Button.kR3.value).whileTrue(m_swerve.applyRequest(() -> brake));
 
-    // if(PS5Con+troller.Button.kR1.value > 0) {
-    //   slowDrive = 0.3;
-    // } else {
-    //   slowDrive = 1;
-    // }
-
-    // System.out.println(PS5Controller.Button.kR1.value);
-    // System.out.println(slowDrive);
+    // Driver Intake Controls
+      new JoystickButton(m_driver, PS5Controller.Button.kL1.value).whileTrue(new Intake(m_intake));
+      new JoystickButton(m_driver, PS5Controller.Button.kCross.value).whileTrue(new Shoot(m_intake));
   }
 
   public Command getAutonomousCommand() {
     return m_autoChooser.getSelected();
-    // return new PathPlannerAuto("Blue Side");
   }
 }
