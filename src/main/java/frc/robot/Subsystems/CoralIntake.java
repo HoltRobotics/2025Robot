@@ -28,6 +28,7 @@ public class CoralIntake extends SubsystemBase {
   SparkMaxConfig m_shooterConfig = new SparkMaxConfig();
 
   boolean m_intakeRunning = false;
+  boolean m_hasCoral = false;
 
   /** Creates a new shooter. */
   public CoralIntake() {
@@ -42,8 +43,15 @@ public class CoralIntake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Intake Running?", m_intakeRunning);
+    // SmartDashboard.putNumber("Intake current", m_shooter.getOutputCurrent());
+    // if (m_shooter.getOutputCurrent() > 19) {
+    //   m_hasCoral = true;
+    // } else {
+    //   m_hasCoral = false;
+    // } 
+    // SmartDashboard.putBoolean("Has Coral", m_hasCoral);
+    // TODO: test Has Coral
     }
-
 
   public void intake() {
     m_shooter.set(-.3);
